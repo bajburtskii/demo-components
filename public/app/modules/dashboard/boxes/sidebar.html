@@ -1,0 +1,7 @@
+<perfect-scrollbar class="m-sidebar__scrollbar" wheel-propagation="false" wheel-speed="10">
+    <ul class="nav">
+        <li ng-repeat="category in categories" class="nav-item" ui-sref-active="active">
+            <a class="nav-link" ui-sref="boxes.category({category_id: category.id})"><span class="nav-title">{{ ::category.name }}</span></a>
+        </li>
+    </ul>
+</perfect-scrollbar>

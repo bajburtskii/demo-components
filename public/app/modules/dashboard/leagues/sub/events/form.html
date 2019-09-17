@@ -1,0 +1,68 @@
+<form ng-submit="save()">
+    <div class="row">
+        <div class="col-xs-12 ">
+            <div class="form-group row" ng-class="{'has-danger': errors.title}">
+                <div class="col-xs-12">
+                    <label class="form-control-label ">Title <span class="text-danger">*</span></label>
+
+                    <input type="text" class="form-control"
+                           ng-model="post.title"
+                           name="title">
+                    <span class="text-danger" ng-if="errors.title">{{ errors.title[0] }}</span>
+                </div>
+            </div><!-- /.form-group -->
+
+            <div class="form-group row" ng-class="{'has-danger': errors.description}">
+                <div class="col-xs-12">
+                    <label class=" form-control-label t">Description <span class="text-danger">*</span></label>
+
+                    <text-editor
+                        type="light"
+                        name="description"
+                        model="post.description"
+                    ></text-editor>
+                </div>
+
+            </div><!-- /.form-group -->
+
+            <div class="form-group row" ng-class="{'has-danger': errors.time}">
+                <div class="col-xs-6 col-md-2">
+                    <label class="form-control-label ">Date <span class="text-danger">*</span></label>
+                    <input type="text"
+                           datepicker="true"
+                           class="form-control"
+                           ng-model="post.date"
+                           name="date">
+                    <span class="text-danger" ng-if="errors.time">{{ errors.time[0] }}</span>
+                </div>
+                <div class="col-xs-6 col-md-2">
+                    <label class="form-control-label ">Time <span class="text-danger">*</span></label>
+                    <input ui-timepicker="timePickerOptions"
+                           class="form-control"
+                           ng-model="post.datetime"
+                           name="time">
+                </div>
+                <div class="col-xs-6 col-md-2">
+                    <div class="form-group" ng-class="{'has-danger': errors.timezone}">
+                        <label class="form-control-label ">Time zone*</label>
+                        <select class="form-control c-select"
+                                ng-model="post.timezone"
+                                name="timezone">
+                            <option value="">- Select -</option>
+                            <option value="PST">(PST) Pacific Standard Time</option>
+                            <option value="MST">(MST) Mountain Standard Time</option>
+                            <option value="CST">(CST) Central Standard Time</option>
+                            <option value="EST">(EST) Eastern Standard Time</option>
+                        </select>
+                        <span class="text-danger" ng-if="errors.timezone">{{ errors.timezone[0] }}</span>
+                    </div>
+                </div>
+            </div><!-- /.form-group -->
+
+            <div class="pull-xs-right">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+
+        </div><!-- /.col -->
+    </div><!-- /.row-lg -->
+</form>

@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="m-chat__forms m-chat__forms--messages m-attachment--files" ng-loading-content>
+                <form ng-submit="addMessage()">
+                    <div class="form-group required">
+                        <div class="form-group--combined form-group-default-select2">
+                            <label>Recipients</label>
+                            <ui-select multiple ng-model="newMessage.recipients"  close-on-select="true">
+                                <ui-select-match placeholder="Select recipients...">{{$item.name}}</ui-select-match>
+                                <ui-select-choices repeat="recipient.id as recipient in friendsList | propsFilter: {name: $select.search}"
+                                                   refresh="searchMedia($select)" refresh-delay="300"
+                                                   minimum-input-length="1">
+                                    <div ng-bind-html="recipient.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                                <ui-select-no-choice>
+                                    We couldn't find any recipient...
+                                </ui-select-no-choice>
+                            </ui-select>
+
+                            <span class="text-danger" ng-if="errors.user_id">{{ errors.user_id[0] }}</span>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group required m-b-0">
+                        <div ng-init="focused=false;blur=false;" class="form-group--combined send-text u-posRelative" ng-class="{'focused': focused }">
+                            <label ng-class="{blur: blur, fade: model.length}" for="message">{{:: 'messages.new_message' | trans}}</label>
+                            <div>
+                                <textarea class="form-control" rows="10" ng-model="newMessage.text" name="text"  placeholder="{{:: 'chat.type_message_here' | trans }}" autofocus required id="message" ng-focus="focused=true;blur=false;" ng-blur="blur=true;focused=false;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="messages-btn">
+                        <button class=" btn btn-primary" type="submit" ng-disabled="newMessage.recipients.length  == 0">{{:: 'general.send' | trans}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

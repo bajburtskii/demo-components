@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org">
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript">
+      function IframeCtrl($scope) {
+        $scope.amount = null;
+        $scope.firstname = null;
+        $scope.lastname = null;
+        $scope.email = null;
+        window.updateData = function(data) {
+          $scope.$apply(function(){
+            $scope.amount = data.amount;
+            $scope.firstname = data.firstname;
+            $scope.lastname = data.lastname;
+            $scope.email = data.email;
+          });
+        };
+      }
+    </script>
+  </head>
+  <body ng:app ng:controller="IframeCtrl">
+    <form action="https://pay.skrill.com" method="post" target="_self">
+     <input type="hidden" name="pay_to_email" value="play@leagues.com">
+     <input type="hidden" name="pay_from_email" value="{{email}}">
+     <input type="hidden" name="recipient_description" value="LeagueS">
+     <input type="hidden" name="language" value="EN">
+     <input type="hidden" name="amount" value="{{amount}}">
+     <input type="hidden" name="currency" value="USD">
+     <input type="hidden" name="payment_methods" value="VSA,MSC,AMX">
+     <input type="hidden" name="firstname" value="{{firstname}}">
+     <input type="hidden" name="lastname" value="{{lastname}}">
+     <input type="hidden" name="detail1_description" value="Deposit to Wallet">
+     <input type="hidden" name="detail1_text" value="">
+     <input type="submit" value="Pay!">
+    </form>
+  </body>
+</html>

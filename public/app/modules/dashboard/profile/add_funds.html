@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 ">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <h2 class="page-title" style="padding-top: 20px;">My Balance</h2>
+                    <div class="display-4"><strong>{{ balance ? balance : 0 | currency : '$' : 2 }}</strong></div>
+
+                </div>
+
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <h2 class="page-title" style="padding-top: 20px;">Add Funds</h2>
+
+                    <!-- Errors -->
+                    <div class="alert-danger" ng-if="server_message" ng-bind="server_message"></div>
+
+                    <form name="form" ng-submit="submit()">
+
+                        <div class="row">
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                <div class="form-group row" ng-class="{'has-danger': form.amount.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Amount</label>
+                                        <input class="form-control" placeholder="0.00" ng-model="item.amount"
+                                               name="amount" type="number" step="0.01">
+                                        <span class="text-danger" ng-if="form.amount.errors"
+                                              ng-bind="form.amount.errors[0]"></span>
+                                    </div>
+                                </div>
+                                <div ng-bind-html="setting_text"></div>
+                            </div>
+
+
+                            <!-- div class="col-xs-6">
+                                <div class="form-group row" ng-class="{'has-danger': form.payment_type.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Payment type</label>
+                                        <select class="form-control c-select"
+                                                ng-model="item.payment_type"
+                                                ng-options="type.id as type.name for type in options_payment_types track by type.id"
+                                                name="payment_type">
+                                            <option value="">- Cash -</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="form.payment_type.errors" ng-bind="form.payment_type.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div -->
+
+                            <!-- div class="col-xs-6">
+                                <div class="form-group row" ng-class="{'has-danger': form.note.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Note</label>
+                                        <textarea class="form-control"
+                                                ng-model="item.note"
+                                                name="note">
+                                        </textarea>
+                                        <span class="text-danger" ng-if="form.note.errors" ng-bind="form.note.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div -->
+
+                        </div>
+
+                        <div class="text-xs-right">
+                            <button type="submit" class="btn btn-primary" ng-disabled="!item.amount">Confirm</button>
+                        </div>
+
+                    </form>
+
+                    <style>
+                        .ngdialog {
+                            margin-top: -110px;
+                        }
+                    </style>
+                    <script type="text/ng-template" id="skrill_iframe.html">
+                        <div>
+                            <iframe id="payform" width="100%" height="680" frameBorder="0"
+                                    ng-src="{{ngDialogData.sUrl}}"></iframe>
+                        </div>
+                    </script>
+
+                </div>
+
+                <div class="col-lg-2">
+
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                    <img src="/images/addfunds_step1.png">
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                    <img src="/images/addfunds_step2.png">
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                    <img src="/images/addfunds_step3.png">
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

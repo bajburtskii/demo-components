@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <h2 class="page-title" style="padding-top: 20px;">My Balance</h2>
+                    <div class="display-4"><strong>{{ $root.auth.data.balance | currency : '$' : 2 }}</strong></div>
+                </div>
+
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <h2 class="page-title" style="padding-top: 20px;">Transfer funds to league bank or user</h2>
+
+                    <!-- Errors -->
+                    <div class="alert-danger" ng-if="server_message" ng-bind="server_message"></div>
+
+                    <form name="form" ng-submit="submit()">
+
+                        <div class="row">
+                            <!-- transfer to  -->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group row" ng-class="{'has-danger': form.to.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class="form-control-label ">Transfer to</label>
+                                        <select class="form-control c-select"
+                                                ng-model="item.to"
+                                                name="to"
+                                                required="required">
+                                            <option value="">- Select -</option>
+                                            <option ng-repeat="item in options_to" ng-value="item.id">{{ item.value }}
+                                            </option>
+                                        </select>
+                                        <span class="text-danger" ng-if="form.to.errors"
+                                              ng-bind="form.to.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end transfer to -->
+                        </div>
+
+                        <div class="row">
+                            <!-- transfer to all users -->
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-if="item.to==1">
+                                <div class="form-group row" ng-class="{'has-danger': error.owner_id.errors}">
+                                    <div class="col-xs-12 ">
+
+                                        <label class="form-control-label">Email</label>
+                                        <input class="form-control" ng-model="item.email" type="email"
+                                               ng-change="validateEmail()" ng-paste="validateEmail()">
+                                        <span class="error" ng-show="!!form.$error.email">Email isn't valid!</span>
+
+                                        <div ng-if="item.is_email_valid === true">
+                                            <label class="form-control-label ">Select User</label>
+                                            <angucomplete-alt id="ex1"
+                                                              placeholder="Search users"
+                                                              pause="100"
+                                                              selected-object="selectUserChanged"
+                                                              local-data="options_owners"
+                                                              search-fields="full_name"
+                                                              title-field="full_name"
+                                                              minlength="1"
+                                                              input-class="form-control form-control-small"
+                                                              focus-in="focusIn()"
+                                                              focus-out="focusOut()"/>
+                                        </div>
+
+                                        <span class="text-danger" ng-if="error.owner_id.errors"
+                                              ng-bind="error.owner_id.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end transfer to all users -->
+
+                            <!-- transfer to friends -->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-if="item.to==2">
+                                <div class="form-group row" ng-class="{'has-danger': form.owner_id.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class="form-control-label ">Select Friend</label>
+
+                                        <angucomplete-alt id="ex2"
+                                                          placeholder="Select friend"
+                                                          pause="100"
+                                                          selected-object="selectUserChanged"
+                                                          local-data="options_friends"
+                                                          search-fields="value"
+                                                          title-field="value"
+                                                          minlength="1"
+                                                          input-class="form-control form-control-small"
+                                                          focus-in="focusIn()"
+                                                          focus-out="focusOut()"/>
+
+                                        <span class="text-danger" ng-if="form.owner_id.errors"
+                                              ng-bind="form.owner_id.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end transfer to friends -->
+
+                            <!-- transfer to league-->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-if="item.to==3">
+                                <div class="form-group row" ng-class="{'has-danger': form.league_id.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Select League</label>
+
+                                        <angucomplete-alt id="ex3"
+                                                          placeholder="Select league"
+                                                          pause="100"
+                                                          selected-object="selectLeagueChanged"
+                                                          local-data="options_leagues"
+                                                          search-fields="name"
+                                                          title-field="name"
+                                                          minlength="1"
+                                                          input-class="form-control form-control-small"
+                                                          focus-in="focusIn()"
+                                                          focus-out="focusOut()"/>
+
+                                        <span class="text-danger" ng-if="form.league_id.errors"
+                                              ng-bind="form.league_id.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end transfer to league -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group row" ng-class="{'has-danger': form.amount.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Amount</label>
+                                        <input class="form-control" placeholder="0.00" ng-model="item.amount"
+                                               name="amount" type="number" step="0.01">
+                                        <span class="text-danger" ng-if="form.amount.errors"
+                                              ng-bind="form.amount.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group row" ng-class="{'has-danger': form.note.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Note</label>
+                                        <textarea class="form-control"
+                                                  ng-model="item.note"
+                                                  name="note">
+                                          </textarea>
+                                        <span class="text-danger" ng-if="form.note.errors"
+                                              ng-bind="form.note.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-bind-html="setting_text"></div>
+
+                        <div class="text-xs-right">
+                            <button type="submit" class="btn btn-primary m-t-0-5" ng-disabled="!item.amount">Confirm
+                            </button>
+                            <!--<a href="" class="btn btn-primary-outline m-l-1 m-t-0-5">Cancel</a>-->
+                        </div>
+                </div>
+                <!-- ==================== -->
+                <hr class="m-t-1-5 m-b-1">
+                <!-- ==================== -->
+
+
+                </form>
+            </div>
+        </div>
+    </div>

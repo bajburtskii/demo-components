@@ -1,0 +1,103 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 ">
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-6 col-lg-6" ng-class="{ 'border-sm-right': can.leagueEdit(league)}">
+                    <h2 class="page-title">League bank</h2>
+                    <div class="display-4"><strong>{{ league.balance | currency : '$' : 2 }}</strong></div>
+                    <div ng-if="league.invite_amount">
+                        League pay in amount <b>{{ league.invite_amount | currency : '$' : 2 }}</b>
+                    </div>
+                    <hr class="m-y-2">
+                    <div>
+                    You've paid in <b>$ {{ payin }}</b>
+                    </div>
+                    <div ng-if="paid">
+                    You've been paid <b>$ {{ paid }}</b>
+                    </div>
+                    <div class="m-t-1" ng-if="league.invite_amount > 0">
+                        <a href="" type="button" class="btn btn-danger" title="Transfer funds" ng-click="ui.transferToLeagueDialog(league)">
+                          Add Funds
+                        </a>
+                    </div>
+                    <div class="m-t-1" ng-if="league.invite_amount == 0">
+                        <div class="text-danger">Commissioner has not set a league pay in amount.</div>
+                    </div>
+                </div>
+
+                <div ng-if="can.leagueEdit(league)" class="col-xs-12 col-sm-6 col-lg-6">
+
+                    <hr class="m-y-2 hidden-sm-up">
+
+                    <h2 class="page-title">Payout</h2>
+
+                    <!-- Errors -->
+                    <div class="alert-danger" ng-if="ui.payout_server_message" ng-bind="ui.payout_server_message"></div>
+
+                    <form ng-submit="ui.payoutCreate()">
+                        <div class="form-group row" ng-class="{'has-danger': errors.user_id}">
+                            <div class="col-xs-12 ">
+                                <label class="form-control-label ">Choose member <span class="text-danger">*</span></label>
+
+                                <select class="form-control c-select"
+                                        ng-model="ui.payout.user_id"
+                                        ng-options="user.id as user.full_name for user in users track by user.id"
+                                        name="user_id">
+                                    <option value="">- Select -</option>
+                                </select>
+                                <span class="text-danger" ng-if="errors.user_id" ng-bind="errors.user_id[0]"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-class="{'has-danger': errors.amount}">
+                            <div class="col-xs-12 ">
+                                <label class=" form-control-label ">Amount <span class="text-danger">*</span></label>
+                                <input class="form-control" placeholder="0.00" ng-model="ui.payout.amount" name="amount" type="number">
+                                <span class="text-danger" ng-if="errors.amount" ng-bind="errors.amount[0]"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-class="{'has-danger': errors.note}">
+                            <div class="col-xs-12 ">
+                                <label class=" form-control-label ">Note</label>
+                                    <textarea class="form-control"
+                                              ng-model="ui.payout.note"
+                                              name="note">
+                                    </textarea>
+                                <span class="text-danger" ng-if="errors.note" ng-bind="errors.note[0]"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs-right">
+                            <button type="submit" class="btn btn-primary-outline" ng-disabled="!users.length || !league.balance">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <hr class="m-y-2">
+
+
+            <h2 class="page-title">Payout schedule</h2>
+
+            <div class="m-cups">
+                <div class="item">
+                    <i class="icon icon-cup text-warning"></i>
+                    <span>1st place {{:: (league.payout_schedule[1] || 0) | currency : '$' : 2 }}</span>
+                </div>
+                <div class="item">
+                    <i class="icon icon-cup text-muted"></i>
+                    <span >2nd place {{:: (league.payout_schedule[2] || 0) | currency : '$' : 2 }}</span>
+                </div>
+                <div class="item">
+                    <i class="icon icon-cup text-brown"></i>
+                    <span >3rd place {{:: (league.payout_schedule[3] || 0) | currency : '$' : 2 }}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

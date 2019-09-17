@@ -1,0 +1,76 @@
+<section class="api container-fluid">
+	<div class="row page-banner">
+		<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-xs-12 page-header">
+			<h2 class="page-title">Free Agents</h2>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-12 provider-link">
+			<a class="btn btn-primary" ng-href="{{global_data.url}}/players?&status=FA" target="_blank" ng-if="global_data.provider.title == 'yahoo'">View Free Agents on {{ global_data.provider.title }}</a>
+			<a class="btn btn-primary" ng-href="https://www55.myfantasyleague.com/2017/add_drop?L={{ global_data.provider_league_id }}" target="_blank" ng-if="global_data.provider.title == 'mfl'">View Trading Block on {{ global_data.provider.title }}</a>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid free-agent-display">
+	<div class="row free-agent-controls">
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			<div class="form-group">
+		        <label class="form-control-label ">Select Position</label>
+		        <select ng-hide="currentAction == 'search'" class="form-control c-select" ng-model="active_position" ng-options="active_position for active_position in positions" ng-change="sortFilterSearch('update_position', null, active_position);">
+		        </select>
+		        <select ng-show="currentAction == 'search'" class="form-control c-select"><option>ALL</option></select>
+		    </div>
+		</div>
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			<div class="form-group" ng-if="global_data.provider.title !='mfl'">
+		        <label class="form-control-label ">Filter by</label>
+		        <select ng-hide="currentAction == 'search'" class="form-control c-select" ng-model="currentFilter" ng-options="currentFilter.display for currentFilter in filters" ng-change="sortFilterSearch('filter', currentFilter);">
+		        </select>
+		        <select ng-show="currentAction == 'search'" class="form-control c-select"><option>N/A</option></select>
+		    </div>
+		</div>
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+		    <div class="form-group" ng-if="global_data.provider.title !='mfl'">
+		    	<form ng-submit="sortFilterSearch('search',text)">
+		        	<label class="form-control-label">Search</label>
+					<input class="form-control" name="name" type="text" ng-model="text">
+					<button class="btn btn-primary" type="submit" id="submit">Submit</button>
+					<button class="btn btn-danger" type="button" ng-hide="currentAction != 'search'" ng-click="clearSearch()">Clear</button>
+				</form>
+		    </div>
+		</div>
+	</div>
+</section> 
+<section class="api container-fluid" id="free-agent-settings">
+	<div class="row sub-section">
+		<p>Displaying <b><u>{{ active_players.length || 0 }}</u></b> free agents</p>
+		<p>Position: <b ng-hide="currentAction == 'search'">{{ active_position }}</b><b ng-show="currentAction == 'search'">ALL</b></p>
+		<p ng-if="global_data.provider.title !='mfl'" ng-hide="currentAction == 'search'">Filter: <b>{{ currentFilter.display }}</b></p>
+		<p ng-if="global_data.provider.title !='mfl'" ng-show="currentAction == 'search'">Search: <b>{{ filterType }}</b></p>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row free-agent-results">
+		<div class="row responsive-table">
+			<div class="row table-headers">
+				<!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><h3>Rank</h3></div> -->
+				<div ng-if="global_data.provider.title == 'mfl' || global_data.sport.short == 'mlb' && !isMobile" ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': global_data.provider.title =='mfl', 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': global_data.sport.short == 'mlb'}"><h3></h3></div>
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': global_data.provider.title =='mfl' || isMobile}"><h3>Name</h3></div>
+				<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': global_data.provider.title =='mfl' || isMobile, 'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': global_data.provider.title !='mfl'}"><h3>Status</h3></div>
+				<div ng-if="global_data.provider.title == 'mfl' || !isMobile" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': global_data.provider.title =='mfl'}"><h3>Pos</h3></div>
+				<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1': global_data.provider.title !='mfl' && !isMobile ,'col-lg-3 col-md-3 col-sm-3 col-xs-3': global_data.provider.title =='mfl' || removedStat, 'col-lg-2 col-md-2 col-sm-2 col-xs-2': isMobile && global_data.sport.short == 'mlb'}"><h3>Team</h3></div>
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-if="global_data.provider.title !='mfl'" ng-model="stat" ng-repeat="stat in active_players[0].stats | filter:reduceStatTitle track by $index" data-toggle="tooltip" data-position="top" tooltip title="{{ playerStatDictionary['mlb'][stat.id]['full'] }} (SORTABLE)" ng-click="sortFilterSearch('sort', stat.id, active_position); sortNumber($index); "><span ng-show="$index == sortParam" class="text-danger">*</span><h3 ng-class="{'sortSelect': $index == sortParam}"><span ng-hide="$index == sortParam">*</span>{{ playerStatDictionary['mlb'][stat.id]['acronym'] }}</h3></div>
+			</div>
+			<div class="row table-data" ng-model="player" ng-repeat="player in active_players track by $index" ng-hide="player/1 == player" ng-click="transferToLeagueDialog(player)">
+		<!-- 		<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><p>{{ $index + 1 }}</p></div> -->
+				<div ng-if="global_data.provider.title == 'mfl' || global_data.sport.short == 'mlb' && !isMobile" ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': global_data.provider.title =='mfl', 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': global_data.sport.short == 'mlb'}"><span>{{ $index + 1 }}</span><img class="player-img" ng-src="{{ player.img || default_player }}"/></div>
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': global_data.provider.title =='mfl' || isMobile}"><p>{{ player.name }}</p></div>
+				<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': global_data.provider.title =='mfl' || isMobile, 'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile && global_data.provider.title != 'mfl'}"><p>{{ player.status || '-'}}</p></div>
+				<div ng-if="global_data.provider.title == 'mfl' || !isMobile" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"  ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': global_data.provider.title =='mfl'}"><p>{{ player.position }}</p></div>
+				<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1': global_data.provider.title !='mfl' && !isMobile ,'col-lg-3 col-md-3 col-sm-3 col-xs-3': global_data.provider.title =='mfl' || removedStat, 'col-lg-2 col-md-2 col-sm-2 col-xs-2': isMobile && global_data.sport.short == 'mlb'}"><p>{{ player.team }}</p></div>
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-if="global_data.provider.title != 'mfl'" ng-model="stat" ng-repeat="stat in player.stats | filter:statReduction track by $index"><p ng-class="{'sortSelect': $index == sortParam}">{{ stat.value }}</p></div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row page-footer"></div>
+</section>

@@ -1,0 +1,127 @@
+<perfect-scrollbar class="m-sidebar__scrollbar" wheel-propagation="false" wheel-speed="10">
+    <a ui-sref="leagues.create" class="create-button">
+        <strong>Create league</strong>
+        <div class="btn btn-primary btn-circle">
+            <i class="icon icon-plus"></i>
+        </div>
+    </a>
+    <div class="m-sidebar__sport" ng-repeat="sport in sports">
+
+        <div style="width: 100%">{{ sport.name }}</div>
+
+        <div style="width: 100%">
+        <ul class="nav-group m-sidebar__league">
+            <li class="nav-item " ng-repeat="item in navItems" ng-if="sport.short == item.sport.short" ng-class="{ active: item._active}">
+                <a class="nav-link" ng-click="ui.open(item.id)" >
+                    <div>
+                        <img imageonload ng-src="{{ item.sport.short | leagueImage }}" />
+                    </div>
+                    <span ng-bind="::item.name"></span>
+                    <i class="icon-up-open" ng-class="{ active: item._active}"></i>
+                </a>
+
+                <ul class="nav " ng-class="{'active': item._active}" ng-show="item.provider_league_id && item.user.external_user_id">
+                    <li class="nav-item" ui-sref-active="active" >
+                        <a class="nav-link" ui-sref="leagues.dashboard({id: item.id})"><span class="nav-title">Dashboard</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active" >
+                        <a class="nav-link" ui-sref="leagues.teams({id: item.id})"><span class="nav-title">Teams</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.standings({id: item.id})"><span class="nav-title">Standings</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.trades({id: item.id})"><span class="nav-title">Trading Block</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.freeAgency({id: item.id})"><span class="nav-title">Free Agency</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.scoresAndSchedule({id: item.id})"><span class="nav-title">Schedules/Scores</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.bank({id: item.id})"><span class="nav-title">League Bank</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link sub" ui-sref="leagues.transactions({id: item.id})"><span class="nav-title">Transactions</span></a>
+                    </li>
+
+                     <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.owners({id: item.id})"><span class="nav-title">Owners</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.edit({ id: item.id })"><span class="nav-title">Settings</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.link({id: item.id})"><span class="nav-title">Linked Leagues</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active" ng-show="(item.provider.slug==='my-fantasy-league' && item.sport.short==='nfl') || (item.provider.slug==='yahoo' && item.sport.short==='mlb')">
+                        <a class="nav-link" ui-sref="leagues.provlink({id: item.id})"><span class="nav-title">Link League</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.share({id: item.id})"><span class="nav-title">Share</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.board({id: item.id})"><span class="nav-title">Message Board</span></a>
+                    </li>
+
+                    <li class="nav-item" ng-class="{'active': $root.state.includes('leagues_news.*') && $root.state.params.id == item.id}">
+                    <a class="nav-link" ui-sref="leagues_news.list({id: item.id})"><span class="nav-title">League News</span></a>
+                </li>
+
+                </ul>
+                <ul class="nav " ng-class="{'active': item._active}" ng-show="!item.provider_league_id || !item.user.external_user_id">  
+                    <li class="nav-item" ui-sref-active="active" >
+                        <a class="nav-link" ng-href="{{item.url}}" target="_blank"><span class="nav-title">View League</span></a>
+                    </li>
+                    <!-- li class="nav-item" ui-sref-active="active" >
+                        <a class="nav-link" ui-sref="leagues.team({id: item.id})"><span class="nav-title">My Team</span></a>
+                    </li -->
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.bank({id: item.id})"><span class="nav-title">League Bank</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link sub" ui-sref="leagues.transactions({id: item.id})"><span class="nav-title">Transactions</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.owners({id: item.id})"><span class="nav-title">Owners</span></a>
+                    </li>
+
+                    <!--<li class="nav-item" ui-sref-active="active">-->
+                        <!--<a class="nav-link" ui-sref="leagues.link({id: item.id})"><span class="nav-title">Linked Leagues</span></a>-->
+                    <!--</li>-->
+                    
+                    <li class="nav-item" ui-sref-active="active" ng-show="(item.provider.slug==='my-fantasy-league' && item.sport.short==='nfl') || (item.provider.slug==='yahoo' && item.sport.short==='mlb')">
+                        <a class="nav-link" ui-sref="leagues.provlink({id: item.id})"><span class="nav-title">Link League</span></a>
+                    </li>
+
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.board({id: item.id})"><span class="nav-title">Message Board</span></a>
+                    </li>
+                    <!-- li class="nav-item" ng-class="{'active': $root.state.includes('leagues_events.*') && $root.state.params.id == item.id}">
+                        <a class="nav-link" ui-sref="leagues_events.list({id: item.id})"><span class="nav-title">Events Calendar</span></a>
+                    </li -->
+                    <li class="nav-item" ng-class="{'active': $root.state.includes('leagues_news.*') && $root.state.params.id == item.id}">
+                        <a class="nav-link" ui-sref="leagues_news.list({id: item.id})"><span class="nav-title">League News</span></a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="leagues.edit({ id: item.id })"><span class="nav-title">Settings</span></a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+        </div>
+
+    </div>
+
+</perfect-scrollbar>

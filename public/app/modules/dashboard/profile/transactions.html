@@ -1,0 +1,88 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 class="page-title">Transaction history</h2>
+
+			<div class="m-flex-table">
+				<div class="thead">
+					<div class="th" style="border-right: 0;">
+						<b>Date / Transaction type</b>
+					</div>
+					<div class="th" style="border-right: 0;">
+						<b>Amount</b>
+					</div>
+					<div class="th" style="border-right: 0;">
+						<b>Balance</b>
+					</div>
+				</div>
+
+				<div ng-repeat="(date, transactions) in transactions.data">
+					<div class="thead">
+						<div class="th" style="border-right: 0;">
+							<b>{{ date | dateTimeFormat_MMddyyy }}</b>
+						</div>
+					</div>
+
+					<div class="tbody">
+						<div class="tr" ng-repeat="transaction in transactions">
+							<div class="tr-inner">
+								<div class="td">
+									<div class="td-inner">
+										{{ transaction.created_at | dateTimeFormat_hhmmssa }}
+										<span ng-if="transaction.name" ng-bind="transaction.name">
+										</span>
+										<span ng-if="!transaction.name">
+											{{ transaction.type == 1 ? 'Add funds' : 'Transfer' }}
+										</span>
+										<div class="transaction__note" ng-if="transaction.note">
+											<div class="note__name">Note:</div>
+											{{ transaction.note }}
+										</div>
+									</div>
+								</div>
+
+								<div class="td" ng-if="transaction.type == 1">
+									<div class="td-inner text-success">
+										+ {{ transaction.amount  | currency : '$' : 2 }}
+									</div>
+								</div>
+
+								<div class="td" ng-if="transaction.type == 2">
+									<div class="td-inner text-danger">
+										- {{ transaction.amount  | currency : '$' : 2 }}
+									</div>
+								</div>
+
+								<div class="td">
+									<div class="td-inner">
+										<strong>{{ transaction.current_balance | currency : '$' : 2 }}</strong>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div ng-if="$root.isEmptyObject(transactions.data)">
+				<placeholder-no-items
+						label="No transactions"
+				></placeholder-no-items>
+			</div>
+
+			<nav class="m-t-2 p-b-2 text-xs-center">
+				<div paging
+					 hide-if-empty="true"
+					 page="transactions.current_page"
+					 page-size="transactions.per_page"
+					 total="transactions.total"
+					 url="/api/transactions"
+					 collection="transactions.data"
+					 group-fn="groupFn"
+					 show-prev-next="true">
+				</div>
+			</nav>
+
+		</div>
+	</div>
+</div>

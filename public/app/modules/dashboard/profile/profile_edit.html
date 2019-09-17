@@ -1,0 +1,222 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div>
+                <!--<div class="is-welcome" ng-if="user.is_active === false">-->
+                    <!--<h5 ng-bind-html="'general.fill_profile'|trans"></h5>-->
+                <!--</div>-->
+
+
+                <h2 class="page-title">Account settings</h2>
+
+                <form class="m-profile" name="form" ng-submit="update_profile()">
+                    <div class="media">
+                        <div class="media-left">
+                            <avatar
+                                    file-token="item.avaToken"
+                                    file-type="1"
+                                    file-size="original"
+                                    parent-id="user.id"></avatar>
+                        </div>
+                        <div class="media-body">
+                            <ul class="list-unstyled">
+                                <li><span class="text-muted">Name: </span>{{ user.first_name }} {{ user.last_name }}
+                                </li>
+                                <li><span class="text-muted">Email: </span>{{ user.email }}</li>
+                            </ul>
+                            <div class="skin-picker-container">
+                                <label class="m-b-0">Dashboard skin</label>
+
+                                <div class="picker">
+                                    <button type="button" class="skin-picker-button skin-{{ user.skin }}-color"
+                                            ng-click="ui.skin.chooser = !ui.skin.chooser">
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- skin -->
+                            <div>
+                                <!-- Skin picker -->
+                                <div class="m-t-1">Please choose skin</div>
+                                <div class="skin-picker  ">
+                                    <div ng-repeat="(key, value) in options_skins"
+                                         class="skin-item skin-{{ value }}-color"
+                                         ng-click="ui.skin.change(value);"></div>
+                                </div>
+                            </div>
+                            <!-- border skin -->
+                            <div>
+                                <!-- Skin picker -->
+                                <div class="m-t-1">Please choose background skin</div>
+                                <div class="skin-picker skin-bg ">
+                                    <div ng-repeat="(key, value) in options_skins_border"
+                                         class="skin-item skin-border-{{ value }}"
+                                         ng-click="ui.skins_border.change(value);"></div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.media-body -->
+
+                    </div><!-- /.media -->
+
+                    <!-- Errors avatar-->
+                    <custom-input-hidden name="avaToken"></custom-input-hidden>
+                    <span class="text-danger" ng-if="form.avaToken.errors" ng-bind="form.avaToken.errors[0]"></span>
+
+                    <h2 class="page-title">Notification settings</h2>
+
+                    <div class=" sm-gutter">
+                        <div class="row">
+                            <div class="col-xs-6 col-xxl-3">
+                                <h3 class="h3"><span class="hidden-xs-down">&nbsp;</span> <span class="hidden-sm-up">&nbsp;</span></h3>
+
+                                <div class="switchery-text">
+                                    New private message
+                                </div>
+                                <div class="switchery-text">
+                                    New transaction
+                                </div>
+                            </div>
+                            <div class="col-xs-3  col-lg-2">
+                                <h3 class="h3 u-textRight">SMS <span class="hidden-xs-down"> &nbsp;</span></h3>
+                                <custom-switchery
+                                        model="item.notifications.phone.new_message"
+                                        name="notifications.phone.new_message"
+                                        yestext="true"
+                                        item="notifications.phone.new_message"
+                                ></custom-switchery>
+
+                                <custom-switchery
+                                        model="item.notifications.phone.new_transaction"
+                                        name="notifications.phone.new_transaction"
+                                        yestext="true"
+                                        item="notifications.phone.new_transaction"
+                                ></custom-switchery>
+                            </div>
+                            <div class="col-xs-3  col-lg-2">
+                                <h3 class="h3 u-textRight">Email </h3>
+                                <custom-switchery
+                                        model="item.notifications.email.new_message"
+                                        name="notifications.email.new_message"
+                                        yestext="true"
+                                        item="notifications.email.new_message"
+                                ></custom-switchery>
+                                <custom-switchery
+                                        model="item.notifications.email.new_transaction"
+                                        name="notifications.email.new_transaction"
+                                        yestext="true"
+                                        item="notifications.email.new_transaction"
+                                ></custom-switchery>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 ">
+
+                            <!-- ==================== -->
+                            <hr class="m-y-2">
+                            <!-- ==================== -->
+
+                            <div class="row">
+                                <div class="col-xs-12 col-md-5  ">
+
+
+                                    <h2 class="page-title">Change password</h2>
+
+                                    <!-- Current password -->
+                                    <fieldset class="form-group" ng-class="{'has-danger': form.old_password.errors}"
+                                              ng-if="user.hasPassword">
+                                        <label class=" form-control-label ">Current password</label>
+                                        <input ng-model="item.old_password" type="password" class="form-control"
+                                               name="old_password">
+                                        <span class="text-danger" ng-if="form.old_password.errors"
+                                              ng-bind="form.old_password.errors[0]"></span>
+                                    </fieldset>
+
+                                    <!-- Password -->
+                                    <fieldset class="form-group" ng-class="{'has-danger': form.password.errors}">
+                                        <label class=" form-control-label ">New password</label>
+                                        <input ng-model="item.password" type="password" class="form-control"
+                                               name="password">
+                                        <span class="text-danger" ng-if="form.password.errors"
+                                              ng-bind="form.password.errors[0]"></span>
+                                    </fieldset>
+
+                                    <!-- Confirm password -->
+                                    <fieldset class="form-group"
+                                              ng-class="{'has-danger': form.password_confirmation.errors}">
+                                        <label class=" form-control-label ">Confirm password</label>
+                                        <input ng-model="item.password_confirmation" type="password"
+                                               class="form-control" name="password_confirmation">
+                                        <span class="text-danger" ng-if="form.password_confirmation.errors"
+                                              ng-bind="form.password_confirmation.errors[0]"></span>
+                                    </fieldset>
+
+                                    <!-- ==================== -->
+                                    <hr class="m-y-2 hidden-sm-up">
+                                    <!-- ==================== -->
+
+
+                                </div><!-- /.col -->
+
+
+                                <div class="col-xs-12 col-md-5 col-md-offset-2">
+                                    <h2 class="page-title">Phone</h2>
+
+                                    <!-- Security questions -->
+                                    <!--<fieldset class="form-group">
+                                        <select class="form-control c-select" name="security_answer.question"
+                                                ng-model="item.security_answer.question">
+                                            <option ng-repeat="val in options_security_questions track by $index" ng-value="val">{{ val }}</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="form['security_answer.question'].errors"
+                                              ng-bind="form['security_answer.question'].errors[0]"></span>
+                                    </fieldset>-->
+
+                                    <!-- Security answer -->
+                                    <!--<custom-input
+                                            model="item.security_answer.answer"
+                                            name="security_answer.answer"
+                                            title="Your answer"
+                                            placeholder="Your answer"></custom-input>
+                                    <s></s>-->
+
+                                    <!-- Phone -->
+                                    <!-- Confirm password -->
+                                    <fieldset class="form-group row "
+                                              ng-class="{'has-danger': form.phone.errors}">
+                                        <div class="col-xs-12 input-group-phone ">
+                                            <!--<label class=" form-control-label ">Phone</label>-->
+                                            <input ng-model="item.phone" type="text" aria-describedby="phone-addon"
+                                                   class="form-control" name="phone">
+                                        </div>
+                                        <div class="col-xs-12">
+                                             <span class="text-danger" ng-if="form.phone.errors"
+                                                   ng-bind="form.phone.errors[0]"></span>
+                                        </div>
+
+                                    </fieldset>
+
+                                </div><!-- /.col -->
+                            </div><!-- /.row-lg -->
+
+
+                            <!-- ==================== -->
+                            <hr class="m-y-2">
+                            <!-- ==================== -->
+
+
+                            <div class="text-xs-right">
+                                <button type="submit" class="btn btn-primary">Save settings</button>
+                            </div>
+
+                        </div><!-- /.col -->
+                    </div><!-- /.row-lg -->
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

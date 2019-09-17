@@ -1,0 +1,28 @@
+<div class="custom-confirm dialog-contents">
+    <div class="confirm-inner">
+        <img imageonload ng-src="{{ ngDialogData.data.display }}" ng-hide="postMsg !== undefined" />
+        <div class="inner">
+            <p ng-bind="ngDialogData.title" ng-hide="postMsg !== undefined"></p>
+        </div>
+    </div>
+    <div class="dialog-msg" ng-show="transactionReq.msg !== undefined" ng-class="transactionReq.response == 'success' ? 'dialog-success' : 'dialog-failure'">
+        <p style="padding: 0 20px;">{{ transactionReq.msg }}</p>
+    </div>
+    <form ng-show="transactionReq.errorId == 'max'">
+        <p ng-show="!yourPlayers">Loading your roster...</p>
+        <p ng-bind="transactionReq.dropDownLabel" ng-show="yourPlayers"></p>
+
+        <div class="form-group row" style="margin:0 60px; margin-bottom: 30px;" ng-show="yourPlayers">
+            <div class="col-xs-12 ">
+                <select class="form-control c-select" ng-model="player" ng-options="'(' + player.plays + ')  ' + player.name for player in yourPlayers" ng-change="ngDialogData.data.dropPlayer(player);" placeholder="Select">
+                </select>
+            </div>
+        </div>
+    </form>
+    <div class="confirm-btn">
+        <button class="button dialog-cancel" ng-click="closeThisDialog(); ngDialogData.data.clearScope()" ng-hide="postMsg !== undefined">Cancel</button>
+        <button class="button green" ng-click="ngDialogData.data.logger(); ngDialogData.data.clearScope();  msgAnimation = !msgAnimation;" ng-hide="transactionReq.errorId == 'max'">Confirm</button>
+        <button class="button green" ng-click="ngDialogData.data.clearScope(); closeThisDialog();" ng-show="transactionReq.errorId == 'none'">Confirm</button>
+        <button class="button green" ng-click="ngDialogData.data.executeTransaction(); closeThisDialog(); ngDialogData.data.clearScope(); " ng-show="transactionReq.errorId == 'max'">Confirm</button>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-title">Newsroom</h2>
+
+            <div>
+                <div ng-repeat="item in items" class="clearfix">
+                    <div class="media m-news">
+                        <div ng-if="item.imageUrl" class="media-left" >
+                            <img class="media-object img-fluid" ng-src="{{item.imageUrl}}">
+                        </div>
+                        <div class="media-body">
+
+                            <!-- Title -->
+                            <h4><a href="{{ item.articleUrl }}" target="_blank" ng-bind-html="item.title"></a></h4>
+
+                            <!-- Date -->
+                            <div class="date" ng-if="item.date"><small ng-bind-html="item.date | dateTimeFormatFlex"></small></div>
+
+
+                            <!-- ==================== -->
+                            <hr class="divider" ng-if="item.date">
+                            <!-- ==================== -->
+
+
+                            <!-- Description -->
+                            <p ng-bind-html="item.description"></p>
+
+                        </div><!-- /.media-body -->
+                    </div><!-- /.media -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

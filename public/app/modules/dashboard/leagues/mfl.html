@@ -1,0 +1,41 @@
+<div class="confirm-inner col-xl-12 col-lg-8 col-xs-12">
+    <!-- Errors -->
+
+    <header class="auth-header">
+        <img ng-src="/images/vendor_mfl.png" width="80" height="80"/>
+        <p>Sign in to your MyFantasyLeage account</p>
+    </header>
+    <div class="alert-danger" ng-if="errors" ng-bind="errors"></div>
+    <!-- Form -->
+    <form name="form" ng-submit="loginMFL()">
+        <div class="alert alert-danger" ng-if="errors" ng-bind="errors"></div>
+        <div class="form-group row" ng-class="{'has-danger': form.username.errors}">
+            <div class="col-xs-12 ">
+                <input class="form-control" placeholder="Username" ng-model="link.username" name="username" type="text">
+                <span class="text-danger" ng-if="form.username.errors" ng-bind="form.username.errors[0]"></span>
+            </div>
+        </div>
+
+        <div class="form-group row" ng-class="{'has-danger': form.password.errors}">
+            <div class="col-xs-12 ">
+                <input class="form-control" type="password" placeholder="Password" ng-model="link.password" name="password">
+                <span class="text-danger" ng-if="form.password.errors" ng-bind="form.password.errors[0]"></span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="auth-actions row">
+
+            <div class="col-xs-12 col-sm-5">
+                <fieldset class="form-group right">
+                    <button type="submit" class="btn btn-primary-outline">Continue</button>
+                </fieldset>
+            </div><!-- /.col -->
+        </div><!-- /.auth-actions -->
+
+    </form><!-- /.auth-form -->
+</div>
+
+
+
+

@@ -1,0 +1,17 @@
+version: '2'
+services:
+ dev_fangool:
+  container_name: leagues_app
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: leagues/compose
+  restart: on-failure:3
+  hostname: leagues
+  volumes:
+   - "/var/www/leagues:/var/www/html"
+  ports:
+   - "8000:80"
+  external_links:
+   - mysqlserver:mysqldb
+  network_mode: "bridge"

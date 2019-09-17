@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="m-league-owners">
+
+                <!-- Page header -->
+                <div class="page-header">
+                    <h2 class="page-title">Owners</h2>
+                    <a ui-sref="leagues.invite({id: league.id})" class="actions" ng-if="can.leagueEdit(league) && league.is_out_limit == false">
+                        <span class="lead">Invite owners</span>
+                        <div class="btn btn-primary btn-circle">
+                            <i class="icon icon-envelope-contain"></i>
+                        </div>
+                    </a>
+                </div><!-- /.page-header -->
+
+                <div class="row">
+                    <div ng-repeat="user in users" class="col-xs-12 col-md-6 col-xl-6 m-t-2">
+                        <div class="media">
+                            <div class="media-left">
+                                <img class="img-thumbnail img-circle" imageonload ng-src="{{ user.league_user.team.avaToken | getAvaUrl:4 }}"/>
+                            </div>
+                            <div class="media-body">
+                                <!-- h5 class="title">{{ user.league_user.team.name || 'No team name' }}</h5 -->
+                                <div class="type">{{ user.league_user.role_name }}: {{ user.first_name }} {{ user.last_name }}</div>
+                                <div ng-if="user.id !== $root.auth.id" class="buttons">
+                                    <a ui-sref="profile.messages_create({selected_user_id:user.id})" class="text-primary" title="Write message">
+                                        <i class="icon icon-envelope"></i>
+                                        <span>Message</span>
+                                    </a>
+                                    <a href="" type="button" class="text-warning" title="Transfer funds" ng-click="ui.payoutDialog(user)">
+                                        <i class="icon icon-coins"></i>
+                                        <span>Transfer funds</span>
+                                    </a>
+                                </div>
+                            </div><!-- /.media-body -->
+                        </div><!-- /.media -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+
+            </div><!-- /.m-league-owners -->
+
+        </div>
+    </div>
+</div>

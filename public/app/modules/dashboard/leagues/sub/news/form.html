@@ -1,0 +1,36 @@
+<form ng-submit="save()">
+	<!-- ==================== -->
+	<hr class="m-t-0 m-b-2">
+	<!-- ==================== -->
+	<div class="form-group row" ng-class="{'has-danger': errors.title}">
+
+		<div class="col-xs-12 ">
+			<label class="form-control-label ">Title <span
+					class="text-danger">*</span></label>
+			<input type="text" class="form-control"
+				   ng-model="post.title"
+				   name="title">
+			<span class="text-danger" ng-if="errors.title">{{ errors.title[0] }}</span>
+		</div>
+	</div><!-- /.form-group -->
+
+	<div class="form-group row" ng-class="{'has-danger': errors.description}">
+		<div class="col-xs-12 ">
+			<label class="form-control-label ">Description <span class="text-danger">*</span></label>
+
+			<text-editor
+					type="light"
+					name="description"
+					model="post.description"
+			></text-editor>
+
+			<span class="text-danger" ng-if="errors.description">{{ errors.description[0] }}</span>
+		</div>
+
+	</div><!-- /.form-group -->
+
+	<div class="pull-xs-right">
+		<button type="submit" class="btn btn-primary">Save</button>
+	</div>
+
+</form>

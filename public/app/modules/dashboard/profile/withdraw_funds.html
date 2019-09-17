@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <h2 class="page-title" style="padding-top: 20px;">My Balance</h2>
+                    <div class="display-4"><strong>{{ $root.auth.data.balance | currency : '$' : 2 }}</strong></div>
+                </div>
+
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <h2 class="page-title" style="padding-top: 20px;">Withdraw Funds</h2>
+
+                    <!-- Errors -->
+                    <div class="alert-danger" ng-if="server_message" ng-bind="server_message"></div>
+
+                    <form name="form" ng-submit="submit()">
+
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group row" ng-class="{'has-danger': form.amount.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Amount</label>
+                                        <input class="form-control" placeholder="0.00" ng-model="item.amount"
+                                               name="amount" type="number">
+                                        <span class="text-danger" ng-if="form.amount.errors"
+                                              ng-bind="form.amount.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6">
+                                <div class="form-group row" ng-class="{'has-danger': form.payment_type.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class="form-control-label ">Payment type</label>
+                                        <select class="form-control c-select"
+                                                ng-model="item.payment_type"
+                                                ng-options="item.key as item.value for item in options_payment_types"
+                                                name="payment_type">
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6">
+                                <div class="form-group row" ng-class="{'has-danger': form.note.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Note</label>
+                                        <textarea class="form-control"
+                                                  ng-model="item.note"
+                                                  name="note">
+                                        </textarea>
+                                        <span class="text-danger" ng-if="form.note.errors"
+                                              ng-bind="form.note.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-show="item.payment_type == 1" class="col-xs-6">
+                                <div class="form-group row" ng-class="{'has-danger': form.skrill_email.errors}">
+                                    <div class="col-xs-12 ">
+                                        <input class="form-control" placeholder="Skrill Email"
+                                               ng-model="item.skrill_email" name="skrill_email" type="email">
+                                        <span class="text-danger" ng-if="form.skrill_email.errors"
+                                              ng-bind="form.skrill_email.errors[0]"></span>
+
+                                    </div>
+                                    <div class="col-xs-12 ">
+                                        <p>You must have a <a href="https://account.skrill.com/signup" target="_blank">Skrill
+                                            Wallet</a> to withdraw funds.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-bind-html="setting_text"></div>
+
+                        <div class="text-xs-right">
+                            <button type="submit" class="btn btn-primary"
+                                    ng-disabled="!item.amount || !item.payment_type">Confirm
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,46 @@
+<section class="api container-fluid">
+	<div class="row page-banner">
+		<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-xs-12 page-header">
+			<h2 class="page-title">League Standings</h2>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-12 provider-link">
+			<a class="btn btn-primary" ng-href="{{global_data.url}}" target="_blank" ng-if="global_data.provider.title == 'yahoo'">View Standings on {{ global_data.provider.title }}</a>
+			<a class="btn btn-primary" ng-href="https://www55.myfantasyleague.com/2017/standings?L={{ global_data.provider_league_id }}" target="_blank" ng-if="global_data.provider.title == 'mfl'">View Standings on {{ global_data.provider.title }}</a>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid" id="standings">
+	<div class="row responsive-table">
+		<div class="row table-headers">
+			<div ng-if="!isMobile && global_data.provider.title != 'mfl'" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><h3>Rank</h3></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 hidden-xs centered"></div>
+			<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': !isMobile, 'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': isMobile && global_data.sport.short =='mlb' || isMobile && global_data.provider.title == 'mfl'}"><h3>Name</h3></div>
+			<div ng-if="!isMobile" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" data-toggle="tooltip" data-position="top" tooltip title="Winning Percentage"><h3 ng-show="!isMobile" ng-hide="isMobile">Win %</h3><h3 ng-show="isMobile" ng-hide="!isMobile">%</h3></div>
+			<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile, 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile}" data-toggle="tooltip" data-position="top" tooltip title="Games Back" ng-if="global_data.provider.title=='yahoo'"><h3>GB</h3></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" data-toggle="tooltip" data-position="top" tooltip title="Wins"><h3>W</h3></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" data-toggle="tooltip" data-position="top" tooltip title="Losses"><h3>L</h3></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" data-toggle="tooltip" data-position="top" tooltip title="Ties"><h3>T</h3></div>
+			<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile, 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile}"><h3 ng-show="!isMobile" ng-hide="isMobile">Pay-out</h3><h3 ng-show="isMobile" ng-hide="!isMobile">$ Out</h3></div>
+			<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile, 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile}"><h3 ng-show="!isMobile" ng-hide="isMobile">Pay-in</h3><h3 ng-show="isMobile" ng-hide="!isMobile">$ In</h3></div>
+			<div class="col-lg-1 col-md-1 col-sm-2 col-xs-1 centered" ng-if="!isMobile"></div>
+		</div>
+		<div class="row table-data" ng-repeat="team in team_standings track by $index">
+			<div ng-if="!isMobile && global_data.provider.title != 'mfl'" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><p>{{ team.rank }}</p></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 hidden-xs centered"><img class="player-img" ng-src="{{ team.logo || default_logo  }}"></div>
+			<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': !isMobile, 'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': isMobile && global_data.sport.short =='mlb' || isMobile && global_data.provider.title == 'mfl'}"><p>{{ team.name }}</p></div>
+			<div ng-if="!isMobile" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-show="{{ team.winpct }}"><p>{{ team.winpct }}</p></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-hide="{{ team.winpct }}" ng-if="!isMobile"><p>{{ (team.wins/(team.wins + team.losses + team.ties)) == NaN ? (team.wins/(team.wins + team.losses + team.ties)) : 0 }}</p></div>
+			<div ng-if="global_data.provider.title=='yahoo'" ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile, 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile}"><p>{{ team.gamesbk }}</p></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><p>{{ team.wins }}</p></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><p>{{ team.losses }}</p></div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 centered"><p>{{ team.ties }}</p></div>
+			<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile, 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile}"><p>{{(global_data.payout_schedule[$index + 1] || 0) | currency : '$' : 2 }}</p></div>
+			<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile, 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile}"><p>$ {{ team.league_pay_in || 0 }}</p></div>
+			<div ng-if="!isMobile" class="col-lg-1 col-md-1 col-sm-2 col-xs-1 centered"><a ui-sref="leagues.teams({id: global_data.id, team: team.key })"><button class="btn btn-primary">view</button></a></div>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid" id="standings-footer">
+	<div class="row page-footer"></div>
+</section>
+

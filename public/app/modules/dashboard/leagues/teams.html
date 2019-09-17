@@ -1,0 +1,144 @@
+<section class="api container-fluid">
+	<div class="row page-banner">
+		<h2 class="page-title">Teams</h2>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row team-slider">
+		<div class="col-xxl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<div class="header-logo">
+				<img class="avatar-img" ng-src="{{ roster_in_view.profile.logo == null ? default_team : roster_in_view.profile.logo }}"/>
+			</div>
+			<div class="header-detail-list">
+				<div class="team-name">
+					<select ng-model="roster_in_view" ng-change="setTeamInView(roster_in_view)" ng-options="roster_in_view.profile.name for roster_in_view in teams"></select>
+				</div>
+				<ul class="team-meta">
+					<li ng-if="global_data.provider.title == 'yahoo'">RANK:  {{ roster_in_view.stats.rank }}</li>
+					<li>RECORD:  {{ roster_in_view.stats.wins }}-{{ roster_in_view.stats.losses }}-{{ roster_in_view.stats.ties }}</li>
+					<li ng-if="global_data.provider.title == 'yahoo'">
+						<a class="btn btn-primary btn-sml" ng-href="{{ global_data.url + '/' +  roster_in_view.profile.id }} " target="_blank">View Team On {{global_data.provider.title}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-xxl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 active-user" ng-show="key_in_view == active_key">
+			<img src="/images/favorite.png"/>
+			<h4>YOUR TEAM</h4>
+		</div>
+	<div class="row">
+</section>
+<section class="api container-fluid">
+	<div class="row team-display">
+		<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+			<div class="sub-header">
+				<h4>Roster</h4>
+			</div>
+			<div class="row responsive-table" ng-repeat="(key, team) in roster_in_view.roster.position_type">
+				<div class="row table-title">
+					<h3 ng-if="global_data.sport.short == 'mlb'">{{ key === "B" ? "Batting" : "Pitching Staff"}}</h3>
+					<h3 ng-if="global_data.sport.short == 'nfl'">{{ key }}</h3>
+				</div>
+				<div class="row table-headers">
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" ng-if="!isMobile"></div>
+					<div ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-3': !isMobile || global_data.sport.short == 'mlb', 'col-lg-4 col-md-4 col-sm-4 col-xs-4': isMobile && global_data.sport.short != 'mlb'}"><h3>Name</h3></div>
+					<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': !isMobile || global_data.provider.title == 'mfl', 'col-lg-3 col-md-3 col-sm-3 col-xs-3 center': isMobile && global_data.sport.short == 'mlb', 'col-lg-4 col-md-4 col-sm-4 col-xs-4 centered': isMobile && global_data.provider.title == 'mfl' && key_in_view != active_key }"><h3>Plays</h3></div>
+					<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': key_in_view == active_key, 'col-lg-3 col-md-3 col-sm-3 col-xs-3': key_in_view != active_key, 'col-lg-4 col-md-4 col-sm-4 col-xs-4 centered': isMobile && global_data.provider.title == 'mfl' && key_in_view != active_key}"><h3>Club</h3></div>
+					<div ng-if="global_data.sport.short == 'mlb'" ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': !isMobile && global_data.provider.title == 'mfl', 'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': isMobile && key_in_view == active_key || !isMobile && global_data.sport.short == 'mlb' && key_in_view == active_key, 'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': key_in_view != active_key && isMobile}"><h3>Status</h3></div>
+					<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile, 'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile}" ng-if="key_in_view == active_key"><h3>Drop</h3></div>
+					<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': global_data.sport.short == 'mlb', 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': !isMobile && global_data.provider.title == 'mfl' || global_data.provider.title == 'mfl'}" ng-if="key_in_view == active_key"><h3>Add</h3></div>
+				</div>
+				<div class="row table-data roster-data" ng-model="player" ng-repeat="player in team track by $index">
+					<div class="row player-meta">
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered" ng-click="stretch =! stretch; injectStats(player);" ng-hide="isMobile"><img class="player-img" ng-src="{{ player.img || default_player }}"></div>
+						<div ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-3': !isMobile || global_data.sport.short == 'mlb', 'col-lg-4 col-md-4 col-sm-4 col-xs-4': isMobile && global_data.sport.short != 'mlb'}" ng-click="stretch =! stretch; injectStats(player);"><p>{{ player.name }}</p></div>
+						<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': !isMobile || global_data.provider.title == 'mfl', 'col-lg-3 col-md-3 col-sm-3 col-xs-3 center': isMobile && global_data.sport.short == 'mlb', 'col-lg-4 col-md-4 col-sm-4 col-xs-4 centered': isMobile && global_data.provider.title == 'mfl' && key_in_view != active_key }" ng-click="stretch =! stretch; injectStats(player);"><p>{{ player.plays }}</p></div>
+						<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2': key_in_view == active_key, 'col-lg-3 col-md-3 col-sm-3 col-xs-3': key_in_view != active_key, 'col-lg-4 col-md-4 col-sm-4 col-xs-4 centered': isMobile && global_data.provider.title == 'mfl' && key_in_view != active_key}" ng-click="stretch =! stretch; injectStats(player);"><p>{{ player.team }}</p></div>
+						<div ng-if="global_data.sport.short == 'mlb'" ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': !isMobile && global_data.provider.title == 'mfl', 'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': isMobile && key_in_view == active_key || !isMobile && global_data.sport.short == 'mlb' && key_in_view == active_key, 'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': key_in_view != active_key && isMobile}" ng-click="stretch =! stretch; injectStats(player);"><p>{{ player.status || '-' }}</p></div>
+						<div ng-class="{'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile, 'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': !isMobile}" ng-click="dropPlayerFromRoster(player)" ng-if="key_in_view == active_key"><img class="drop-player" ng-src="/images/delete.png"></div>
+						<div ng-class="{'col-lg-1 col-md-1 col-sm-1 col-xs-1 centered': global_data.sport.short == 'mlb', 'col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': !isMobile && global_data.provider.title == 'mfl' || global_data.provider.title == 'mfl'}" ng-if="key_in_view == active_key"><img class="add-player" ng-src="/images/add-to-roster.png" ng-click="editStartingLineup(player, 'start')" ng-if="global_data.provider.title=='yahoo'"><input type="checkbox" ng-if="global_data.provider.title =='mfl'" ng-click="pushToLineup(player.key, player.name);"></div>
+					</div>
+					<div class="row player-stats" ng-show="stretch">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" ng-model="key" ng-repeat="(key, value) in playersAndStats[player.name]">
+							<div class="row">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 stat-title" data-toggle="tooltip" data-position="top" tooltip title="{{playerStatDictionary[global_data.sport.short][key]['full']}}"><h3>{{ playerStatDictionary[global_data.sport.short][key]['acronym'] }}</h3></div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h3>{{ value }}</h3></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row table-footer" ng-if="global_data.provider.title =='mfl'" ng-show="key_in_view == active_key">
+					<button class="btn btn-orange" data-ng-disabled="!mfl_startIds.length" ng-click="editStartingLineup(mfl_startIds, 'start', mfl_startNames)">Submit Lineup</button>
+				</div>
+				<div class="row table-data lineup-data" ng-show="global_data.provider.title == 'mfl' && !roster_in_view.roster.position_type.all">
+					<p class="empty-lineup">This franchise has no roster selected</p>
+				</div>
+				<div class="row table-data lineup-data" ng-show="lineupCount[key] == 0">
+					<p class="empty-lineup" ng-if="global_data.sport.short == 'mlb'">This team has no starting {{ key === "B" ? "Batters" : "Pitching Staff"}} for this date</p>
+					<p class="empty-lineup" ng-if="global_data.sport.short != 'mlb'">This franchise has no starting lineup for this date</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12 border-xl-left">
+			<div class="row" id="lineup">
+				<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-xs-12">
+					<div class="sub-header">
+						<h4>Starting Lineup</h4>
+					</div>
+				</div>
+				<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-12 date-selection">
+					<label ng-if="global_data.sport.short != 'nfl'">DATE</label>
+					<input ng-if="global_data.sport.short != 'nfl'" class="calendar-select" type="text" datepicker="true" ng-model="displayDate" format="yyyy-mm-dd" name="date" ng-value="displayDate" ng-change="dateRefresh(displayDate)">
+					<div class="date-slider row" ng-if="global_data.sport.short == 'nfl'">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<label>WEEK</label>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+							<div ng-click="week_decr(nfl_actual)" class="side-button left">
+								<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<p>{{ nfl_actual }}</p>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+							<div ng-click="week_incr(nfl_actual)" class="side-button right">
+								<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row responsive-table" ng-repeat="(key, team) in lineup_in_view.roster.position_type">
+				<div class="row table-title">
+					<h3 ng-if="global_data.sport.short == 'mlb'">{{ key === "B" ? "Batting" : "Pitching Staff"}}</h3>
+					<h3 ng-if="global_data.sport.short == 'nfl'">{{ key }}</h3>
+				</div>
+				<div class="row table-headers">
+					<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-if="key_in_view == active_key && global_data.provider.title != 'mfl'"></div>
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Pos</h3></div>
+					<div ng-class="{'col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile && key_in_view != active_key ||  !isMobile || isMobile && key_in_view == active_key && global_data.sport.short == 'mlb', 'col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': isMobile && key_in_view == active_key && global_data.sport.short != 'mlb'}"></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 centered"><h3>Name</h3></div>
+					<div ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': key_in_view != active_key, 'col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered':  key_in_view == active_key}"><h3>Club</h3></div>
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Status</h3></div>
+				</div>
+				<div class="row table-data lineup-data" ng-model="player" ng-repeat="player in team track by $index" ng-hide="player.position == 'BN' || player.position == '' || player.position == 'nonstarter'">
+					<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1 centered" ng-if="key_in_view == active_key && global_data.provider.title != 'mfl'"><img class="add-player" ng-src="/images/drop-from-roster.png" ng-click="editStartingLineup(player, 'bench')" ng-if="global_data.provider.title !='mfl'"></div>
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered weighted"><p ng-if="global_data.sport.short == 'mlb'">{{ player.position }}</p><p ng-if="global_data.sport.short == 'nfl'">{{ player.plays }}</p></div>
+					<div ng-class="{'col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered': isMobile && key_in_view != active_key ||  !isMobile || isMobile && key_in_view == active_key && global_data.sport.short == 'mlb', 'col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': isMobile && key_in_view == active_key && global_data.sport.short != 'mlb'}"><img class="player-img" ng-src="{{ player.img || default_player }}"></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 centered"><p>{{ player.name }}</p></div>
+					<div ng-class="{'col-lg-3 col-md-3 col-sm-3 col-xs-3 centered': key_in_view != active_key, 'col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered':  key_in_view == active_key}"><p>{{ player.team }}</p></div>
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><p>{{ player.status || '-' }}</p></div>
+				</div>
+				<div class="row table-data lineup-data" ng-show="lineupCount[key] == 0">
+					<p class="empty-lineup" ng-if="global_data.sport.short == 'mlb'">This team has no starting {{ key === "B" ? "Batters" : "Pitching Staff"}} for this date</p>
+					<p class="empty-lineup" ng-if="global_data.sport.short != 'mlb'">This franchise has no starting lineup for this date</p>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row page-footer"></div>
+</section>

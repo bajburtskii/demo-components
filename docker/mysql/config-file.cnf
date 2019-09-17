@@ -1,0 +1,9 @@
+[mysqld]
+
+innodb_flush_log_at_trx_commit = 2
+
+innodb_log_file_size = 256M
+innodb-log-buffer-size = 64M
+
+innodb-flush-method = O_DIRECT
+innodb_thread_concurrency = 8

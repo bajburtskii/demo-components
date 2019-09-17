@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-xl-12">
+            <h2 class="page-title">Link League</h2>
+            <div class="box_league_link">
+                <img ng-src="{{baseUrl}}/images/vendor_{{league.provider.title}}.png"/>
+                <div class="center-block" ng-if="!league.provider.is_linked">
+                    <h2>{{league.provider.name}}</h2>
+                </div>
+        
+                <div class="center-block" ng-if="!league.user.external_user_id">
+                    <p>Connect your {{league.provider.name}} account with LeagueS</p>
+                    <span class="text-danger" ng-if="league.error" ng-bind="league.error"></span>
+
+                    <div ng-if="!league.provider_league_id">
+                        <p><strong>Enter Fantasy League ID</strong></p>
+                        <fieldset class="form-group" ng-class="{'has-danger': form.email.errors}">
+                            <input type="text" name="league_id" ng-model="league.user_league_id" class="user_league_input" placeholder />
+                        </fieldset>
+                    </div>
+                    <a href class="btn btn-primary" ng-click="authenticate(league.provider.slug)">Link League</a>
+                </div>
+   
+                <div class="center-block" ng-if="league.user.external_user_id">
+                    <h5><span class="highlight">{{league.provider.name}}</span> is currently linked to League</h5>
+                    <a href class="btn btn-primary" ng-click="unlinkLeague()">Unlink</a>
+                </div>
+ 
+            </div>
+
+        </div>
+    </div>
+</div>

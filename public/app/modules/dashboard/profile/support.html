@@ -1,0 +1,27 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 class="page-title">Send message to Support</h2>
+
+			<form ng-submit="sendTicket()">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-xl-8">
+
+						<fieldset class="form-group" ng-class="{'has-danger': errors.message}">
+							<label class=" form-control-label ">Message text</label>
+                <textarea ng-model="ticket.message" cols="30" rows="10" class="form-control"
+						  name="message"></textarea>
+							<span class="text-danger" ng-bind-html="errors.message"></span>
+						</fieldset>
+
+						<div class="text-xs-right">
+							<button type="submit" class="btn btn-primary-outline">Send message</button>
+						</div>
+
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</form>
+
+		</div>
+	</div>
+</div>

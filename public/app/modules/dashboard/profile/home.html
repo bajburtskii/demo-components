@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12 col-xxl-3 border-xxl-right column custom-flex">
+            <div class="m-b-1">
+                <h2 class="page-title">My Balance</h2>
+                <div class="display-4"><strong>{{ ($root.auth.data.balance || 0) | currency : '$' : 2 }}</strong></div>
+            </div>
+            <div><a class="btn btn-danger" ui-sref="profile.add_funds">Add funds</a></div>
+        </div><!-- /.col -->
+
+
+        <!-- ==================== -->
+        <div class="col-xs-12 hidden-xxl-up"><hr class="m-y-2"></div>
+        <!-- ==================== -->
+
+
+        <div class="col-xs-12 col-lg-6 col-xxl-4 border-xl-right m-home custom-flex">
+            <div class="m-b-2">
+                <h2 class="page-title">Profile info</h2>
+                <div class="media">
+                    <div class="media-left">
+                        <img class="img-thumbnail img-circle" alt="" ng-src="{{ $root.auth.avaToken | getAvaUrl:1:'original' }}" />
+                    </div>
+                    <div class="media-body">
+                        <ul class="list-unstyled">
+                            <li><span class="text-muted">Name: </span>{{ $root.auth.first_name }} {{ $root.auth.last_name }}</li>
+                            <li><span class="text-muted">Email: </span>{{ $root.auth.email }}</li>
+                        </ul>
+                        <div class="m-home__skin-block"><div  >Dashboard skin </div><div class="m-home__skin-color {{ $root.getUserSkin() }}-color {{ $root.getUserBorderSkin() }}-color"></div></div>
+                        <a ui-sref="profile.invite_friends">Invite my friends</a>
+                    </div><!-- /.media-body -->
+                </div><!-- /.media -->
+            </div><!-- /.m-b -->
+            <div><a class="btn btn-primary-outline" ui-sref="profile.edit">Account settings</a></div>
+        </div><!-- /.col -->
+
+
+        <!-- ==================== -->
+        <div class="col-xs-12 hidden-lg-up"><hr class="m-y-2"></div>
+        <!-- ==================== -->
+
+        <div class="col-xs-12 col-lg-6 col-xxl-5 column m-message__notifier custom-flex">
+            <div ng-if="!isEmptyObject(last_message)">
+                <div class="m-b-2">
+                    <h2 class="page-title">Messages</h2>
+                    <div class="media">
+                        <div class="media-left">
+                            <img imageonload class="img-thumbnail img-circle"
+                                 ng-src="{{ last_message.user.avaToken | getAvaUrl:1:'tiny' }}" alt="{{ last_message.user.full_name }}"/>
+                            <span class="label label-danger">New</span>
+                        </div>
+                        <div class="media-body">
+                            <ul class="list-unstyled">
+                                <li><span class="text-muted">From:</span> {{:: last_message.user.full_name }}</li>
+                                <li><span class="text-muted">Date:</span> {{:: last_message.created_at | dateTimeFormat }}</li>
+                            </ul>
+                            <p ng-bind-html=":: last_message.text | words:20"></p>
+                            <div>
+                                <i class="custom-icon icon-envelope-plus text-muted lead"></i>
+                                <a ui-sref="profile.messages_dialog({group_id:last_message.group_id})">Reply</a>
+                            </div>
+                        </div><!-- /.media-body -->
+                    </div><!-- /.media -->
+                </div><!-- /.m-b -->
+
+                <div class="links">
+                    <a ui-sref="profile.messages" class="btn btn-primary-outline">Inbox messages</a>
+                    <!--<a ui-sref="profile.messages_dialog({group_id:last_message.group_id})" class="btn btn-primary btn-circle"><i class="custom-icon icon-envelope-plus"></i></a>-->
+                </div>
+            </div>
+
+            <div ng-if="isEmptyObject(last_message)">
+                <placeholder-no-items label="No new messages"></placeholder-no-items>
+            </div>
+
+
+        </div><!-- /.col -->
+    </div><!-- /.row-lg -->
+
+</div>

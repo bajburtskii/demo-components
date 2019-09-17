@@ -1,0 +1,295 @@
+
+<section class="api container-fluid">
+	<div class="row page-banner">
+		<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-xs-12 page-header">
+			<h2 class="page-title">Dashboard</h2>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-12 provider-link">
+			<a class="btn btn-primary" ng-href="{{global_data.url}}" target="_blank">View Dashboard on {{ global_data.provider.title }}</a>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row meta-data">
+		<div class="header-logo">
+			<img class="avatar-image" ng-src="{{ current.your_team.img || default_team }}"/>
+		</div>
+		<div class="league-meta row">
+			<table id="league-meta">
+				<thead>
+					<tr>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="table-label">league</td>
+						<td class="meta-title table-notice">{{ global_data.name }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">provider</td>
+						<td class="meta-title">{{ global_data.provider.name }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">teams</td>
+						<td class="meta-title">{{ team_count }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">week</td>
+						<td class="meta-title">{{ current.week }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">team</td>
+						<td class="meta-title table-notice"><a ui-sref="leagues.teams({id: global_data.id, team: global_data.user.external_user_id })">{{ current.your_team.team_name || current.your_team.profile.name }}</a></td>
+					<tr>
+						<td class="table-label">role</td>
+						<td class="meta-title">{{ global_data.user.role_name }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row dashboard-views">
+		<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 border-xl-right">
+			<div class="sub-header">
+				<a ui-sref="leagues.scoresAndSchedule({id: global_data.id})"><h4>Scores & Schedules</h4></a>
+			</div>
+			<div class="micro-header">
+				<h3>Week {{ displayWeek }}</h3>
+			</div>
+			<!-- <div class="slider">
+				<div class="date-slider row">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						<div ng-click="dateRefresh('decrement');" class="side-button left">
+							<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+						</div>
+					</div>
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+						<div class="row slide-section">
+							<div class="slide-cube" ng-model="date" ng-repeat="date in league.dateList[activeWeek]">
+								<button group-toggle-class="active-button" class="date-button" ng-click="dateRegistry(date);" >
+									<h3>{{date | date: league.dateDisplayFormat}}</h3>
+								</button>
+								<div class="triangle" ng-show="date == current.date"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						<div ng-click="dateRefresh('increment');" class="side-button right">
+							<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<div class="slider">
+				<div class="date-slider row">
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+								<div ng-click="dateRefresh('decrement');" class="side-button left">
+									<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+								<div class="row slide-section">
+									<h1 style="width: 100%; text-align: center; font-weight: bold;">{{ activeWeek }}</h1>
+									<!-- <div class="slide-cube" ng-model="date" ng-repeat="date in league.dateList[activeWeek]">
+										<button group-toggle-class="active-button" class="date-button" ng-click="dateRegistry(date);" >
+											<h3>{{date | date: league.dateDisplayFormat}}</h3>
+										</button>
+										<div class="triangle" ng-show="date == current.date"></div>
+									</div> -->
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+								<div ng-click="dateRefresh('increment');" class="side-button right">
+									<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					</div>
+				</div>
+			</div>
+			<!-- <div class="slider">
+				<div class="date-slider row">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+						<div class="row slide-section">
+							<div class="slide-cube"><h3>MON</h3></div>
+							<div class="slide-cube"><h3>TUE</h3></div>
+							<div class="slide-cube"><h3>WED</h3></div>
+							<div class="slide-cube"><h3>THU</h3></div>
+							<div class="slide-cube"><h3>FRI</h3></div>
+							<div class="slide-cube"><h3>SAT</h3></div>
+							<div class="slide-cube"><h3>SUN</h3></div>
+						</div>
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+				</div>
+			</div> -->
+			<div class="slider">
+				<div class="row game-display">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row slide-section" ng-model="matchup" ng-repeat="matchup in current.matchups">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 team-left border-xl-right">
+								<img class="avatar-image-mini" ng-src="{{ matchup[0].img || default_team }}"/>
+								<ul>
+									<li class="team-title"><a ui-sref="leagues.teams({id: global_data.id, team: matchup[0].team_key })">{{ matchup[0].team_name }}</a></li>
+									<li>{{ matchup[0].points }}pts</li>
+								</ul>
+								<div class="versus"><span>vs</span></div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 team-right">
+								<img class="avatar-image-mini" ng-src="{{ matchup[1].img || default_team }}"/>
+								<ul>
+									<li class="team-title"><a ui-sref="leagues.teams({id: global_data.id, team: matchup[1].team_key })">{{ matchup[1].team_name }}</a></li>
+									<li>{{ matchup[1].points }}pts</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row slide-section" ng-if="current.matchups.length < 1">
+							<p style="width:100%; text-align: center;">There are no scores or scheduling available for this week</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+			<div class="sub-header border-top-md">
+				<a ui-sref="leagues.teams({id: global_data.id})"><h4>Next Lineup</h4></a>
+				<h3>{{ tomorrow }}</h3>
+			</div>
+			<div class="sub-section featured-lineup">
+				<img class="avatar-image-mini" ng-src="{{ current.your_team.img || default_team }}"/>
+				<ul>
+					<li class="team-title left"><a ui-sref="leagues.teams({id: global_data.id, team: global_data.user.external_user_id })">{{ current.your_team.team_name || users_team_meta.profile.name }}</a></li>
+					<li class="left">{{ current.your_team.points || users_team_meta.stats.points }}pts</span></li>
+					<li class="left"><a ui-sref="leagues.teams({id: global_data.id, team: global_data.user.external_user_id })"><button class="btn btn-primary btn-sml">Edit Lineup</button></a></li>
+				</ul>
+			</div>
+			<div class="rosters">
+				<div class="next-lineups">
+					<div class="row slide-section" ng-repeat="player in users_team_data" ng-hide="player.position == 'BN' || player.position == '' || player.position == 'nonstarter'">
+						<img class="player-img" ng-src="{{ player.img || default_player }}"/>
+						<ul>
+							<li>{{ player.name }}</li>
+							<li class="orange-txt">{{ player.plays }}</li>
+						</ul>
+					</div>
+				</div>	
+			</div>
+			<div class="micro-header sub-section">
+				<h4>VS</h4>
+			</div>
+			<div class="sub-section featured-lineup">
+				<img class="avatar-image-mini" ng-src="{{ current.opponent.img || default_team }}" ng-if="current.opponent"/>
+				<ul ng-if="current.opponent">
+					<li class="team-title left"><a ui-sref="leagues.teams({id: global_data.id, team: current.opponent.team_key })">{{ current.opponent.team_name }}</a></li>
+					<li class="left">{{ current.opponent.points }}pts</span></li>
+				</ul>
+				<h3 ng-if="!current.opponent">You have no scheduled opponent. Make sure you have selected enough players on your roster, or whether your opponent has made roster selections</h3>
+			</div>
+			<div class="rosters" ng-if="current.opponent">
+				<div class="next-lineups">
+					<div class="row slide-section" ng-repeat="player in opponent_team_data" ng-hide="player.position == 'BN' || player.position == '' || player.position == 'nonstarter'">
+						<img class="player-img" ng-src="{{ player.img || default_player }}"/>
+						<ul>
+							<li>{{ player.name }}</li>
+							<li class="orange-txt">{{ player.plays }}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row dashboard-views">
+		<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 border-xl-right pending-trades">
+			<div class="sub-header">
+				<a ui-sref="leagues.trades({id: global_data.id})"><h4>Pending Trades</h4></a>
+			</div>
+			<div class="macro-trades">
+				<div class="row slide-section" ng-model="trade" ng-repeat="trade in trades_received">
+					<div class="row trade-count">
+						<h4>{{ $index + 1 }}</h4>
+					</div>
+					<div class="row trade-item">
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 team-left trade-from">
+							<div class="row responsive-table">
+								<div class="row table-title">
+									<a ui-sref="leagues.teams({id: global_data.id, team: trade.meta.trade_partner_key })"><h3>{{ trade.meta.trade_partner_name }}</h3></a>
+								</div>
+								<div class="row table-headers">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h3>Name</h3></div>
+									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Role</h3></div>
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 centered"><h3>Pos</h3></div>
+									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Team</h3></div>
+								</div>
+								<div class="row table-data" ng-repeat="player in trade.players_received">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><p>{{ player.name }}</p></div>
+									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><p>{{ player.position_type }}</p></div>
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 centered"><p>{{ player.position }}</p></div>
+									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><p>{{ player.team }}</p></div>
+								</div>
+							</div>
+							<div class="versus"><span>FOR</span></div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 team-right trade-to">
+							<div class="row responsive-table">
+								<div class="row table-title">
+									<a ui-sref="leagues.teams({id: global_data.id, team: global_data.user.external_user_id })"><h3>You</h3></a>
+								</div>
+								<div class="row responsive-table">
+									<div class="row table-headers">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h3>Name</h3></div>
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Role</h3></div>
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 centered"><h3>Pos</h3></div>
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Team</h3></div>
+									</div>
+									<div class="row table-data" ng-repeat="player in trade.players_traded">
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><p>{{ player.name }}</p></div>
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><p>{{ player.position_type }}</p></div>
+										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 centered"><p>{{ player.position }}</p></div>
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><p>{{ player.team }}</p></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-if="trades_received.length == 0" style="width:100%;">
+				<p style="width: 100%; text-align: center;">You have no pending trades</p>
+			</div>
+		</div>
+		<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 injured-players">
+			<div class="sub-header">
+				<a target="_blank" ng-href="{{global_data.url}}/injuries"><h4>Injured Players</h4></a>
+			</div>
+			<div class="row responsive-table" id="injuryLog">
+				<div class="row table-headers" ng-hide="injuryCount == 0">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h3>Player</h3></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><h3>Status</h3></div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 centered"><h3>Position</h3></div>
+				</div>
+				<div class="row table-data" ng-model="$index" ng-repeat="player in users_team_data | filter:is_injured:player track by $index ">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><a ng-href="https://sports.yahoo.com/mlb/players/{{  }}" target="_blank"><p>{{ player.name }}</p></a></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 centered"><p>{{ player.status }}</p></div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 centered"><p>{{ player.plays }}</p></div>
+				</div>
+			</div>
+			<div class="row table-data" ng-if="injuryCount == 0" style="width:100%; margin:0;">
+				<p style="width: 100%; text-align: center;">You have no injured players</p>
+			</div>
+		</div>
+	</div>
+</section> 
+<section class="api container-fluid">
+	<div class="row page-footer"></div>
+</section>

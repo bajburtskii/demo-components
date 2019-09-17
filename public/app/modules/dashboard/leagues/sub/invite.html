@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-xl-10">
+            <h2 class="page-title">Invite owners</h2>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-xl-12">
+                    <form name="form" ng-submit="sentInvite()">
+
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12 long">
+                                <div class="form-group row" ng-class="{'has-danger': form.name.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class="form-control-label">Name <span class="text-danger">*</span></label>
+
+                                        <input class="form-control" placeholder="name" ng-model="invite.name" name="name" type="text">
+                                        <span class="text-danger" ng-if="form.name.errors" ng-bind="form.name.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12 long">
+                                <div class="form-group row" ng-class="{'has-danger': form.email.errors}">
+                                    <div class="col-xs-12 ">
+                                        <label class=" form-control-label ">Email <span class="text-danger">*</span></label>
+                                        <input class="form-control" placeholder="email address" ng-model="invite.email" name="email" type="text">
+                                        <span class="text-danger" ng-if="form.email.errors" ng-bind="form.email.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12 col-sm-offset-6 long">
+                                <div class="form-group row" ng-class="{'has-danger': form.phone.errors}">
+                                    <div class="col-xs-12  input-group-phone">
+                                        <label class=" form-control-label ">Or Phone <span class="text-danger">*</span></label>
+
+                                        <input class="form-control" placeholder="phone number" ng-model="invite.phone" name="phone" type="text" aria-describedby="phone-addon">
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <span class="text-danger" ng-if="form.phone.errors" ng-bind="form.phone.errors[0]"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ==================== -->
+                        <hr class="m-y-2">
+                        <!-- ==================== -->
+
+                        <div class="text-xs-right">
+                            <button type="submit" class="btn btn-primary">Send invite</button>
+                        </div>
+
+                    </form>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div>
+    </div>
+</div>

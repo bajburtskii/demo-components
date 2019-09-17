@@ -1,0 +1,34 @@
+<div class="custom-confirm dialog-contents">
+    <div id="make_trade" ng-hide="transactionReq" style="max-height:600px; overflow-y: scroll;">
+        <div class="confirm-inner">
+            <div class="inner">
+                <h1>Create A Trade</h1>
+                <form id="trade-dialog">
+                    <p ng-bind="ngDialogData.title[0]"></p>
+                    <select class="form-control c-select" ng-model="team" ng-options="team.profile.name for team in teams" ng-change="ngDialogData.data.clearTradeList('opponent'); ngDialogData.data.clearTradeList(); ngDialogData.data.clearSelectedClass('dialog-oppPlayer-selected', 'partners-players-selected'); ngDialogData.data.clearSelectedClass('dialog-yourPlayer-selected', 'your-players-selected'); ngDialogData.data.clearScope(); ngDialogData.data.injectTradeTargets(team.profile.team_key)" placeholder="Select Trade Partner">
+                    </select>
+                    <p ng-bind="ngDialogData.title[1]" ng-show="tradePartnerPlayers.length > 0"></p>
+                    <ul class="player-log" ng-show="tradePartnerPlayers.length > 0">
+                        <li class="partners-players-selected" ng-repeat="player in tradePartnerPlayers track by $index" model="player.key" ng-click="ngDialogData.data.acquirePlayer('opponent', player.key, player.name); selected = !selected" ng-class="{'dialog-oppPlayer-selected': selected}" >{{ player.name }}
+                        </li>
+                    </ul>
+                    <span class="trade-for-item" ng-repeat="player in tradeForList track by $index"><span ng-show="$index > 0">,</span> +{{ player }}</span>
+                    <br>
+                    <button class="button" ng-show="tradeForList.length > 0" ng-click="ngDialogData.data.clearTradeList('opponent'); ngDialogData.data.clearTradeList(); ngDialogData.data.clearSelectedClass('dialog-yourPlayer-selected', 'your-players-selected'); ngDialogData.data.clearSelectedClass('dialog-oppPlayer-selected', 'partners-players-selected')">Clear</button>
+                    <p ng-bind="ngDialogData.title[2]" ng-show="tradeForList.length > 0"></p>
+                    <ul ng-show="tradeForList.length > 0">
+                        <li class="your-players-selected" ng-repeat="player in users_players track by $index" model="player" ng-click="ngDialogData.data.acquirePlayer('you', player.key, player.name); selected = !selected" ng-class="{'dialog-yourPlayer-selected': selected}" >{{ player.name }}
+                        </li>
+                    </ul>
+                    <span class="trade-away-item" ng-repeat="player in tradeAwayList track by $index"><span ng-show="$index > 0">,</span> -{{ player }}</span><br><button class="button" ng-show="tradeAwayList.length > 0" ng-click="ngDialogData.data.clearTradeList(); ngDialogData.data.clearSelectedClass('dialog-yourPlayer-selected', 'your-players-selected')">Clear</button><br>
+                    <label ng-show="tradeForList.length > 0 && tradeAwayList.length > 0" class="form-control-label">Add a message</label>
+                    <textarea ng-show="tradeForList.length > 0 && tradeAwayList.length > 0" class="form-control" style="margin-bottom:20px;" ng-model="txtMsg" ng-change="ngDialogData.data.captureTxtMsg(txtMsg);" name="note"></textarea>
+                </form>
+            </div> 
+        </div>
+    </div>
+    <div class="confirm-btn">
+        <button class="button dialog-cancel" ng-click="closeThisDialog(); ngDialogData.data.clearScope();">Cancel</button>
+        <button data-ng-disabled="tradeForList.length == 0 || tradeAwayList.length == 0" class="btn btn-green" ng-click="ngDialogData.data.executeTrade(); ngDialogData.data.clearScope(); closeThisDialog();">Confirm</button>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 ">
+
+            <div class="page-header">
+                <h2 class="page-title">News</h2>
+                <a ui-sref="leagues_news.create({id:league_id})" class="actions" ng-if="league.author.user_id === current_user.id">
+                    <span class="lead">Create post</span>
+                    <div class="btn btn-primary btn-circle">
+                        <i class="icon icon-plus"></i>
+                    </div>
+                </a>
+            </div><!-- /.page-header -->
+
+            <div class="news-container m-list-container" ng-show="news.data.length">
+                <div class="item" ng-repeat="post in news.data">
+                    <h2 class="h4"><a ui-sref="leagues_news.one({id:post.league_id,post_id:post.id})">{{:: post.title }}</a></h2>
+                    <div class="item-date"><small>{{:: post.created_at | dateFormat }}</small></div>
+
+                    <div class="item-content" ng-bind-html="post.description | words:100 | bindHtml"></div>
+
+                    <a ui-sref="leagues_news.one({id:post.league_id,post_id:post.id})">read more</a>
+                </div>
+            </div><!-- /.news-container -->
+
+            <div ng-show="!news.data.length">
+                <placeholder-no-items label='No posts yet'></placeholder-no-items>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="m-t-2 p-b-2 text-xs-center">
+                <div paging
+                     hide-if-empty="true"
+                     page="news.current_page"
+                     page-size="news.per_page"
+                     total="news.total"
+                     url="/api/leagues/{{ league.id }}/news"
+                     collection="news.data"
+                     show-prev-next="true">
+                </div>
+            </nav>
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div>

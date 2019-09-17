@@ -1,0 +1,13 @@
+<div class="custom-confirm dialog-contents">
+    <div class="confirm-inner">
+        <p ng-bind="ngDialogData.title"></p>
+    </div>
+    <div class="inner">
+        <label class=" form-control-label ">Add a message</label>
+            <textarea class="form-control" ng-model="txtMsg" ng-change="ngDialogData.data.captureTxtMsg(txtMsg);" name="note"></textarea>
+    </div>
+    <div class="confirm-btn">
+        <button class="button dialog-cancel" ng-click="ngDialogData.data.clearScope(); closeThisDialog();">Cancel</button>
+        <button class="button green" ng-click="ngDialogData.data.logger(); ngDialogData.data.clearScope(); closeThisDialog();">Confirm</button>
+    </div>
+</div>

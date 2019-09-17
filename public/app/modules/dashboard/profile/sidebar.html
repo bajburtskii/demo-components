@@ -1,0 +1,44 @@
+<perfect-scrollbar class="m-sidebar__scrollbar" wheel-propagation="false" wheel-speed="10">
+    <ul class="nav">
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link" ui-sref="profile.home"><span class="nav-title">Dashboard</span></a>
+        </li>
+
+        <li class="nav-item">
+            <span class="nav-title nav-link">Wallet</span>
+        </li>
+
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link sub" ui-sref="profile.add_funds"><span class="nav-title">Add funds</span></a>
+        </li>
+
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link sub" ui-sref="profile.withdraw_funds"><span class="nav-title">Withdraw funds</span></a>
+        </li>
+
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link sub" ui-sref="profile.transfer"><span class="nav-title">Transfer funds</span></a>
+        </li>
+
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link sub" ui-sref="profile.transactions"><span class="nav-title">Transaction History</span></a>
+        </li>
+
+        <li class="nav-item " ng-class="{ active: state.includes('profile.messages') || state.includes('profile.messages_create') || state.includes('profile.messages_dialog')}">
+            <a class="nav-link" ui-sref="profile.messages">
+                <span class="nav-title">Messages</span>
+                <span class="badget label label-danger label-circle" ng-if="$root.auth.count_unread_messages">
+                    {{ $root.auth.count_unread_messages }}
+                </span>
+            </a>
+        </li>
+
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link" ui-sref="profile.edit"><span class="nav-title">Account settings</span></a>
+        </li>
+
+        <li class="nav-item" ui-sref-active="active">
+            <a class="nav-link" ui-sref="profile.support"><span class="nav-title">Support</span></a>
+        </li>
+    </ul>
+</perfect-scrollbar>

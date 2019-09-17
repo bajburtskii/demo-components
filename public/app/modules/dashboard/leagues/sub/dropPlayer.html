@@ -1,0 +1,17 @@
+<div class="custom-confirm dialog-contents">
+    <div class="confirm-inner">
+        <img imageonload ng-src="{{ ngDialogData.data.display }}"/>
+        <div class="inner">
+            <p ng-bind="ngDialogData.title"></p>
+        </div>
+    </div>
+    <div class="dialog-msg" ng-show="transactionReq.msg !== undefined" ng-class="transactionReq.response == 'success' ? 'dialog-success' : 'dialog-failure'">
+        <p>{{ transactionReq.msg }}</p>
+    </div>
+    <div class="confirm-btn">
+        <button ng-show="transactionReq.response == 'failure' || transactionReq == undefined" class="button dialog-cancel" ng-click="closeThisDialog(); ngDialogData.data.clearScope()">Cancel</button>
+        <button ng-show="transactionReq == undefined" class="button green" ng-click="ngDialogData.data.logger(); msgAnimation = !msgAnimation; ngDialogData.data.clearScope()">Confirm</button>
+        <button ng-show="transactionReq.response == 'success'" class="button" ng-click="closeThisDialog(); ngDialogData.data.clearScope();">Close</button>
+        <a ng-show="transactionReq.response == 'failure'" class="button" id="editTeam" ng-href="{{transactionReq.link}}" ng-click="ngDialogData.data.clearScope()">{{ transactionReq.btnTxt }}</a>
+    </div>
+</div>

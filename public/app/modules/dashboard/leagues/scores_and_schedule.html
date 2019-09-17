@@ -1,0 +1,111 @@
+<section class="api container-fluid">
+	<div class="row page-banner">
+		<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-xs-12 page-header">
+			<h2 class="page-title">Scores and Schedule</h2>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-12 provider-link">
+			<a class="btn btn-primary" ng-href="{{global_data.url}}" target="_blank" ng-if="global_data.provider.title == 'yahoo'">View Scores/Schedules on {{ global_data.provider.title }}</a>
+			<a class="btn btn-primary" ng-href="https://www55.myfantasyleague.com/2017/options?L={{ global_data.provider_league_id }}&O=15" target="_blank" ng-if="global_data.provider.title == 'mfl'">View Scores/Schedules on {{ global_data.provider.title }}</a>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid" id="opponent-display">
+	<div class="row" ng-if="current.opponent">
+		<div id="opponent-block">	
+			<span>OPPONENT</span>
+			<img class="avatar-image" ng-src="{{ current.opponent.img || '/images/stubs/leagueava/preview.jpg' }}">
+			<span ng-class="{'ls-win': gameStatus == 'W', 'ls-lose': gameStatus == 'L'}">{{ gameStatus }} {{current.your_team.points }} - {{current.opponent.points}}
+			</span>
+		</div>	
+		<div id="opponent-title">
+			<a ui-sref="leagues.teams({id: global_data.id, team: current.opponent.team_key })"><h3 id="opponent-name" data-toggle="tooltip" data-position="top" tooltip="Your Opponent" title="" class="ng-binding">{{ current.opponent.team_name}}</h3></a>
+		</div>
+	</div>
+	<div class="row" ng-if="!current.opponent">
+		<p>You have no opponent scheduled for this week.<br> It is possible your scheduled opponent has not selected their roster yet. <br> If you see no scheduled matchups for your franchise in any week, make sure that you meet the league's minimum number of roster selections. <br> Make sure that all franchises have valid rosters.</p>
+	</div>
+</section>
+<section class="api container-fluid" id="dateResults">
+	<div class="row">
+		<h1>Week {{ displayWeek }}</h1>
+		<div class="slider" style="height: auto; padding: 10px 0;">
+			<div class="date-slider row">
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<div ng-click="dateRefresh('decrement');" class="side-button left">
+								<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<div class="row slide-section">
+								<h1 style="width: 100%; text-align: center; font-weight: bold;">{{ activeWeek }}</h1>
+								<!-- <div class="slide-cube" ng-model="date" ng-repeat="date in league.dateList[activeWeek]">
+									<button group-toggle-class="active-button" class="date-button" ng-click="dateRegistry(date);" >
+										<h3>{{date | date: league.dateDisplayFormat}}</h3>
+									</button>
+									<div class="triangle" ng-show="date == current.date"></div>
+								</div> -->
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<div ng-click="dateRefresh('increment');" class="side-button right">
+								<i class="flaticon-arrowhead-thin-outline-to-the-left"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				</div>
+			</div>
+		</div>
+		<!-- <div class="slider">
+			<div class="date-slider row">
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+					<div class="row slide-section">
+						<div class="slide-cube"><h3>MON</h3></div>
+						<div class="slide-cube"><h3>TUE</h3></div>
+						<div class="slide-cube"><h3>WED</h3></div>
+						<div class="slide-cube"><h3>THU</h3></div>
+						<div class="slide-cube"><h3>FRI</h3></div>
+						<div class="slide-cube"><h3>SAT</h3></div>
+						<div class="slide-cube"><h3>SUN</h3></div>
+					</div>
+				</div>
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+			</div>
+		</div> -->
+		<div class="slider" style="margin-top: 5px;">
+			<div class="row game-display">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="row slide-section" ng-model="matchup" ng-repeat="matchup in current.matchups">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 team-left border-xl-right">
+							<img class="avatar-image-mini" ng-src="{{ matchup[0].img || '/images/stubs/leagueava/preview.jpg' }}"/>
+							<ul>
+								<li class="team-title"><a ui-sref="leagues.teams({id: league.id, team: matchup[0].team_key })">{{ matchup[0].team_name }}</a></li>
+								<li>{{ matchup[0].points }}pts</li>
+							</ul>
+							<div class="versus"><span>vs</span></div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 team-right">
+							<img class="avatar-image-mini" ng-src="{{ matchup[1].img || '/images/stubs/leagueava/preview.jpg' }}"/>
+							<ul>
+								<li class="team-title"><a ui-sref="leagues.teams({id: league.id, team: matchup[1].team_key})">{{ matchup[1].team_name }}</a></li>
+								<li>{{ matchup[1].points }}pts</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row slide-section" ng-if="current.matchups.length < 1">
+						<p style="width:100%; text-align: center;">There are no scores or scheduling available for this week</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row page-footer"></div>
+</section>

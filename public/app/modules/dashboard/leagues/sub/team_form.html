@@ -1,0 +1,66 @@
+<div class="container">
+    <form name="form" ng-submit="save()">
+        <div class="row-lg">
+            <div class="col-xs-12 border-md-right col-md-6 col-xxl-4 m-b-1">
+
+                <h2 class="page-title">Team profile</h2>
+                <div class="">
+                    <label class="form-control-label m-b-1">Team logo <span class="text-danger">*</span></label>
+                    <avatar
+                            file-token="team.avaToken"
+                            file-type="4"
+                            file-size="preview"
+                            parent-id="team.id"
+                            upload-callback="avatarUploadCallback"></avatar>
+                    <custom-input-hidden name="avaToken"></custom-input-hidden>
+                </div>
+
+                <div class="form-group m-b-0 " ng-class="{'has-danger': form.name.errors}">
+                    <label class="form-control-label ">Team name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control"
+                           ng-model="team.name"
+                           name="name"
+                            required="required">
+                    <span class="text-danger" ng-if="form.name.errors">{{ form.name.errors[0] }}</span>
+                </div><!-- /.form-group -->
+
+            </div>
+
+            <div class="col-xs-12 col-md-6 col-xxl-4 m-b-1">
+
+                <hr class="m-b-2 hidden-md-up">
+
+                <h2 class="page-title clearfix">
+                    Players
+                    <div class="btn btn-primary btn-circle pull-right" ng-click="addPlayer()">
+                        <i class="icon icon-plus"></i>
+                    </div>
+                </h2>
+
+                <div class="form-group m-b-0" ng-class="{'has-danger': form.name.errors}" ng-repeat="player in team.players track by $index">
+                    <label class="form-control-label ">Player {{$index+1}}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               ng-model="team.players[$index]['name']"
+                               name="name">
+                        <span class="input-group-addon" ng-click="removePlayer($index)"><i class="icon icon-trash-empty text-danger"></i></span>
+                    </div>
+
+                    <span class="text-danger" ng-if="form.name.errors">{{ form.name.errors[0] }}</span>
+                </div><!-- /.form-group -->
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-xxl-8 text-xs-right">
+
+                <hr>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

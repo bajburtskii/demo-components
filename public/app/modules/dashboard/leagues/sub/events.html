@@ -1,0 +1,43 @@
+<div class="row-lg">
+    <div class="col-xs-12 col-md-5 col-lg-6 col-xl-5 border-md-right">
+
+        <div class="page-header">
+            <h2 class="page-title">Our upcoming Events</h2>
+            <a ui-sref="leagues_event.create({id:event_id})" class="actions" ng-if="league.author.user_id === current_user.id">
+                <span class="lead">Create event</span>
+                <div class="btn btn-primary btn-circle">
+                    <i class="icon icon-plus"></i>
+                </div>
+            </a>
+        </div><!-- /.page-header -->
+
+        <simple-calendar apiurl="apiUrl"></simple-calendar>
+
+    </div>
+
+    <div class="col-xs-12 col-md-7 col-lg-6 col-xl-7">
+
+        <!-- ==================== -->
+        <hr class="m-y-2 hidden-md-up">
+        <!-- ==================== -->
+
+        <div class="news-container">
+
+            <div class="item">
+                <h2 class="h4"><a href="">Lorem ipsum news title</a></h2>
+                <div class="date"><small>01/06/2018</small></div>
+
+                <!-- ==================== -->
+                <hr class="m-y-0-5">
+                <!-- ==================== -->
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non mauris sodales, accumsan libero eu, tincidunt ligula. Nunc ultrices vestibulum eleifend. Curabitur vulputate posuere diam id bibendum. Mauris molestie lectus est, vitae congue nisl commodo in.</p>
+            </div><!-- /.item -->
+
+        </div><!-- /.news-container -->
+
+        <!-- Pagination -->
+
+    </div>
+
+</div>

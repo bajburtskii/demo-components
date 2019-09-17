@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <!--
+            <h2 class="page-title">Owner's box</h2>
+            -->
+            <div class="container m-owner-box">
+                <div class="row">
+                    <div class="card col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" ng-repeat="item in items.data">
+                        <div class="card-block">
+                            <div class="block">
+                                <img class="card-img-top" imageonload ng-src="{{ item.avaToken | getAvaUrl:3 }}" />
+                                <h4 class="card-title">{{:: item.name }}</h4>
+
+                                <show-more item="item" ngsrc="{{ item.avaToken | getAvaUrl:3 }}"></show-more>
+                            </div>
+
+                            <div>
+                                <input class="btn btn-primary-outline btn-block animate-if nganimation" type="text"
+                                       value="{{ item.code }}"
+                                       ng-if="item.show_code"
+                                       select-on-click="true">
+                                <button class="btn btn-primary-outline btn-block " ng-if="!item.show_code" ng-click="showCode(item)" ng-bind-html="'Get promo code'"></button>
+                            </div>
+                        </div>
+                    </div><!-- /.card -->
+                </div>
+            </div>
+
+            <!--
+            <div ng-show="!items.data.length">
+                <placeholder-no-items label='No posts yet'></placeholder-no-items>
+            </div>
+            -->
+
+            <coming-soon label='Coming Soon'></coming-soon>
+
+
+            <!-- Pagination -->
+            <nav class="m-t-2 text-xs-center">
+                <div paging
+                     hide-if-empty="true"
+                     page="items.current_page"
+                     page-size="items.per_page"
+                     total="items.total"
+                     url="{{ apiUrl }}"
+                     collection="items.data"
+                     show-prev-next="true">
+                </div>
+            </nav>
+
+
+        </div>
+    </div>
+</div>

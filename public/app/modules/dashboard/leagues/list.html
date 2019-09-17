@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="m-leagues">
+                <h2 class="page-title">My Leagues</h2>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-6 col-xl-6 m-t-2" ng-repeat="league in leagues">
+
+                        <div class="media">
+                            <div class="media-left">
+                                <a ui-sref="leagues.bank({id: league.id})">
+                                    <img class="img-thumbnail img-circle" imageonload ng-src="{{ league.sport.short | leagueImage }}" />
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h5 class="title"><b>{{:: league.name }}</b></h5>
+                                <div >
+                                    <a ui-sref="leagues.edit({id:league.id})"><span class="u-link-hover">Edit League</span><i class="custom-icon icon-pencil links"></i></a>
+                                </div>
+                                <div class="buttons">
+                                    <a class="u-link" ui-sref="leagues.transactions({id: league.id })"  title="View transactions">
+                                        <i class="icon icon-coins u-color-warning"></i>
+                                        <span class="badget label label-danger label-circle" ng-if="league.count_non_confirm_transactions" ng-bind="league.count_non_confirm_transactions"></span>
+                                        <span class="u-link-hover">View transactions</span>
+                                    </a>
+                                </div>
+                            </div><!-- /.media-body -->
+                        </div><!-- /.media -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div>
+
+        </div>
+    </div>
+</div>

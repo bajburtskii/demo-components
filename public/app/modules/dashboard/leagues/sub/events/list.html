@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-5 col-lg-6 col-xl-5 border-md-right">
+
+            <div class="page-header">
+                <h2 class="page-title">Our upcoming events</h2>
+                <a ui-sref="leagues_events.create" class="actions">
+                    <span class="lead">Create event</span>
+                    <div class="btn btn-primary btn-circle">
+                        <i class="icon icon-plus"></i>
+                    </div>
+                </a>
+            </div><!-- /.page-header -->
+
+          <div class="m-b-1">
+              <simple-calendar
+                      apiurl="apiUrl"
+                      dayapiurl="dayApiUrl"
+                      activedate="activedate"></simple-calendar>
+          </div>
+
+        </div>
+
+        <div class="col-xs-12 col-md-7 col-lg-6 col-xl-7">
+
+            <div class="news-container m-list-container--events" ng-show="events.data.length">
+                <div class="item" style="padding-bottom: 0;" ng-repeat="event in events.data">
+                    <h2 class="h4"><a ui-sref="leagues_events.one({event_id:event.id})">{{:: event.title}}</a></h2>
+                    <div class="item-date"><small>{{:: event.time | dateTimeFormat }} ({{ event.timezone }})</small></div>
+
+                    <div class="item-content" ng-bind-html="::event.description | words:40 | bindHtml"></div>
+                </div><!-- /.item -->
+
+            </div><!-- /.news-container -->
+
+            <div ng-show="!events.data.length">
+                <placeholder-no-items label='No events'></placeholder-no-items>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="m-t-2 p-b-2 text-xs-center">
+                <div paging
+                     hide-if-empty="true"
+                     page="events.current_page"
+                     page-size="events.per_page"
+                     total="events.total"
+                     url="/api/leagues/{{ league.id }}/events"
+                     collection="events.data"
+                     show-prev-next="true">
+                </div>
+            </nav>
+        </div>
+
+    </div>
+
+</div>

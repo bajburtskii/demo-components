@@ -1,0 +1,329 @@
+<div class="is-welcome" ng-if="welcome">
+    <h5 ng-bind-html="'general.welcome'|trans"></h5>
+</div>
+<form name="form" ng-submit="save()">
+    <div ng-if="can.leagueEdit(league)" class="col-xs-12 col-xl-5">
+        <div class="row">
+            <h2 class="page-title" ng-bind="league.id ? 'Update league' : 'Create league' "></h2>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div ng-if="can.leagueEdit(league)"
+             class="col-xs-12 col-xl-5">
+            <h4 class="page-title ng-binding">Sports league</h4>
+            <div class="form-group " ng-class="{'has-danger': form.sport_id.errors}">
+                <select class="form-control" name="sport_id"
+                        ng-model="league.sport_id"
+                        ng-init="league.sport_id"
+                        ng-change="updateSports()"
+                        ng-disabled="editMode"
+                        ng-options="sport.id as sport.name for sport in sports">
+                    <option value="" selected>- Select -</option>
+                </select>
+                <span class="text-danger" ng-if="form.sport_id.errors">{{ form.sport_id.errors[0] }}</span>
+
+                <div ng-if="league.sport_id == -1">
+                    <label class="form-control-label ">Other sport</label>
+                    <input class="form-control" name="sport_name" ng-model="league.sport_name" type="text">
+                    <span class="text-danger" ng-if="form.sport_name.errors">{{ form.sport_name.errors[0] }}</span>
+                </div>
+            </div>
+
+            <h4 class="page-title ng-binding">Fantasy provider</h4>
+            <div class="form-group " ng-class="{'has-danger': form.provider_id.errors}">
+                <select class="form-control" name="provider_id"
+                        ng-model="league.provider_id"
+                        ng-disabled="editMode"
+                        ng-change="updateProviders(league.provider_id)"
+                        ng-options="provider.id as provider.name for provider in providers">
+                    <option value="" selected>- Select -</option>
+                </select>
+                <span class="text-danger" ng-if="form.provider_id.errors">{{ form.provider_id.errors[0] }}</span>
+
+                <div ng-if="league.provider_id == -1">
+                    <label class="form-control-label ">Other provider</label>
+                    <input class="form-control" ng-model="league.provider_name" name="provider_name" type="text">
+                    <span class="text-danger" ng-if="form.provider_name.errors">{{ form.provider_name.errors[0] }}</span>
+                </div>
+                
+                <div ng-bind-html="league.note"></div>
+            </div>
+
+            <h4 class="page-title ng-binding">League</h4>
+            <div class="form-group " ng-class="{'has-danger': form.name.errors}">
+
+            <label class="form-control-label ">League name <span class="text-danger">*</span></label>
+
+            <input type="text" class="form-control"
+                    ng-model="league.name"
+                    name="name">
+            <span class="text-danger" ng-if="form.name.errors">{{ form.name.errors[0] }}</span>
+
+            </div><!-- /.form-group -->
+
+            <div class="form-group" ng-class="{'has-danger': form.invite_amount.errors}">
+                <label class="form-control-label ">Pay in amount <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="0.00"
+                       ng-model="league.invite_amount"
+                       name="invite_amount">
+                <span class="text-danger" ng-if="form.invite_amount.errors">{{ form.invite_amount.errors[0] }}</span>
+            </div><!-- /.form-group -->
+
+            <!--
+            <div class="form-group " ng-class="{'has-danger': form.payout_rule.errors}">
+                <label class=" form-control-label ">Pay out rules <span class="text-danger">*</span></label>
+                <select class="form-control c-select" name="payout_rule"
+                        ng-model="league.payout_rule"
+                        ng-options="item.key as item.value for item in options_payout_rule"
+                        ng-disabled="league.id"></select>
+                <span class="text-danger" ng-if="form.payout_rule.errors">{{ form.payout_rule.errors[0] }}</span>
+            </div>
+            -->
+            <!-- /.form-group -->
+
+            <div class="form-group " ng-class="{'has-danger': form.owners_limit.errors}">
+                <label class=" form-control-label ">Owners limit <span class="text-danger">*</span></label>
+                <select class="form-control c-select" name="owners_limit"
+                        ng-model="league.owners_limit"
+                        ng-options="item.key as item.value for item in options_owners_limit"></select>
+                <span class="text-danger" ng-if="form.owners_limit.errors">{{ form.owners_limit.errors[0] }}</span>
+            </div><!-- /.form-group -->
+
+            <div class="form-group " ng-class="{'has-danger': form.url.errors}">
+                <label class=" form-control-label ">League url <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="https://"
+                       ng-model="league.url"
+                       ng-disabled="league.id"
+                       name="url">
+                       <!-- <p class="small-text" ng-hide="league.id"><i>Example:</i> {{ league.provider_url_selected }}XXXXXXX</p> -->
+                <span class="text-danger" ng-if="form.url.errors">{{ form.url.errors[0] }}</span>
+            </div><!-- /.form-group -->
+
+            <div class="form-group" ng-class="{'has-danger': form.commissioner.errors}" ng-if="league.id">
+                <label class="form-control-label">Change commissioner</label>
+                <select class="form-control c-select" name="commissioner_id"
+                        ng-model="league.commissioner_id">
+                    <option value="">- Select -</option>
+                    <option ng-repeat="user in users" ng-value="user.id">{{ user.full_name }}</option>
+                </select>
+                <span class="text-danger" ng-if="form.commissioner.errors">{{ form.commissioner.errors[0] }}</span>
+            </div><!-- /.form-group -->
+
+        </div>
+
+
+        <div ng-if="can.leagueEdit(league)" class="col-xs-12 col-xl-5">
+            <div class=" m-b-1 ">
+
+                <label class="form-control-label m-b-1">League logo <span class="text-danger">*</span></label>
+                <br>
+                <!-- <img ng-src="/images/league_team_{{league.sport_short}}.jpg" width="70" height="70"/> -->
+                <img class="img-thumbnail img-circle" imageonload ng-src="{{ league.sport_short | leagueImage }}" width="130" height="130"/>
+                <!-- <avatar
+                        file-token="league.avaToken"
+                        file-type="2"
+                        file-size="preview"
+                        parent-id="league.id"
+                        upload-callback="avatarUploadCallback"></avatar> -->
+
+                <!-- <custom-input-hidden name="avaToken"></custom-input-hidden> -->
+                <!--<span class="text-danger" ng-if="errors.avaToken" ng-bind="errors.avaToken[0]"></span>-->
+
+                <!--<div (click)="file.click()">-->
+                <!--<img class="img-thumbnail img-circle" src="{{ league.image.path || 'images/logo.png' }}">-->
+                <!--</div>-->
+                <!--<input type="file" class="hidden-xs-up" #file (change)="uploadImage($event)">-->
+                <!--<input type="hidden" [(ngModel)]="league.image.id" name="image[id]">-->
+                <!--<span class="text-danger">{{ errors['image.id'] }}</span>-->
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div ng-if="can.leagueEdit(league)"
+             class="col-xs-12">
+
+            <div class="row m-b-1">
+                <div class="form-group col-lg-4 col-xs-12" ng-class="{'has-danger': form['payout_schedule.1'].errors}">
+
+                    <label class="form-control-label ">1st place</label>
+                    <input type="text" class="form-control" placeholder="0.00"
+                           ng-model="league.payout_schedule[1]" name="payout_schedule.1">
+
+                    <span class="text-danger"
+                          ng-if="form['payout_schedule.1'].errors">{{form['payout_schedule.1'].errors[0] }}</span>
+                </div><!-- /.form-group -->
+                <div class="form-group col-lg-4 col-xs-12 " ng-class="{'has-danger': form['payout_schedule.2'].errors}">
+
+                    <label class="    form-control-label ">2nd place</label>
+                    <input type="text" class="form-control" placeholder="0.00"
+                           ng-model="league.payout_schedule[2]"
+                           name="payout_schedule.2">
+
+                    <span class="text-danger"
+                          ng-if="form['payout_schedule.2'].errors">{{ form['payout_schedule.2'].errors[0] }}</span>
+                </div><!-- /.form-group -->
+                <div class="form-group col-lg-4 col-xs-12 "
+                     ng-class="{'has-danger': form['payout_schedule.3'].errors}">
+
+                    <label class=" form-control-label ">3rd place</label>
+                    <input type="text" class="form-control" placeholder="0.00"
+                           ng-model="league.payout_schedule[3]"
+                           name="payout_schedule.3">
+
+                    <span class="text-danger"
+                          ng-if="form['payout_schedule.3'].errors">{{ form['payout_schedule.3'].errors[0] }}</span>
+                </div><!-- /.form-group -->
+
+            </div><!-- /.row -->
+        </div><!-- /.col -->
+
+    </div><!-- /.row-lg -->
+
+    <div class="row">
+
+        <div class="col-xs-12 col-xl-7">
+
+            <!-- ==================== -->
+            <hr class="m-y-2 hidden-md-up">
+            <!-- ==================== -->
+
+            <h4 class="page-title">Notification settings</h4>
+            <div class="row">
+                    <div class="col-xs-6 col-lg-7">
+                        <h3 class="h3">&nbsp;</h3>
+                        <div class="switchery-text">
+                            New member joined
+                        </div>
+                        <div class="switchery-text">
+                            New board message
+                        </div>
+                        <div class="switchery-text">
+                            New transaction
+                        </div>
+                        <div class="switchery-text">
+                            Pay out confirmed
+                        </div>
+                        <div class="switchery-text">
+                            Pay out denied
+                        </div>
+                    </div>
+                <div class="col-xs-3 col-lg-2">
+                    <h3 class="h3 u-textRight">Email</h3>
+                    <custom-switchery
+                            model="league.notifications.email.new_owner_joined"
+                            name="notifications.email.new_owner_joined"
+                            yestext="true"
+                            item="notifications.email.new_owner_joined"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.email.new_board_message"
+                            name="notifications.email.new_board_message"
+                            yestext="true"
+                            item="notifications.email.new_board_message"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.email.new_transaction"
+                            name="notifications.email.new_transaction"
+                            yestext="true"
+                            item="notifications.email.new_transaction"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.email.payout_confirmed"
+                            name="notifications.email.payout_confirmed"
+                            yestext="true"
+                            item="notifications.email.payout_confirmed"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.email.payout_denied"
+                            name="notifications.email.payout_denied"
+                            yestext="true"
+                            item="notifications.email.payout_denied"
+                            ></custom-switchery>
+                </div>
+                <div class="col-xs-3 col-lg-2 col-lg-offset-1">
+                    <h3 class="h3 u-textRight">SMS &nbsp;</h3>
+                    <custom-switchery
+                            model="league.notifications.phone.new_owner_joined"
+                            name="notifications.phone.new_owner_joined"
+                            yestext="true"
+                            item="notifications.phone.new_owner_joined"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.phone.new_board_message"
+                            name="notifications.phone.new_board_message"
+                            yestext="true"
+                            item="notifications.phone.new_board_message"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.phone.new_transaction"
+                            name="notifications.phone.new_transaction"
+                            yestext="true"
+                            item="notifications.phone.new_transaction"
+                            ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.phone.payout_confirmed"
+                            name="notifications.phone.payout_confirmed"
+                            yestext="true"
+                            item="notifications.phone.payout_confirmed"
+                           ></custom-switchery>
+
+                    <custom-switchery
+                            model="league.notifications.phone.payout_denied"
+                            name="notifications.phone.payout_denied"
+                            yestext="true"
+                            item="notifications.phone.payout_denied"
+                            ></custom-switchery>
+
+
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group row" ng-if="league.notifications.phone.new_board_message || league.notifications.phone.payout_denied || league.notifications.phone.payout_confirmed ||league.notifications.phone.new_owner_joined || league.notifications.phone.new_transaction"
+                         ng-class="{'has-danger': form.user_phone.errors}">
+
+                        <div class="col-xs-12 input-group-phone ">
+                            <label class="form-control-label">Phone <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control"
+                                   ng-model="league.user_phone"
+                                   name="user_phone">
+                        </div>
+                        <div class="col-xs-12">
+                            <span class="text-danger" ng-if="form.user_phone.errors">{{ form.user_phone.errors[0] }}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div><!-- /.form-group -->
+
+        </div><!-- /.col -->
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 m-t-1 m-b-1" ng-class="{'col-xl-5 text-xl-right': !can.leagueEdit(league)}">
+            <button type="button" ng-if="league.id && !can.leagueEdit(league)" ng-click="leagueLeave()"
+                    class="btn btn-danger m-r-1">
+                Leave league
+            </button>
+            <button type="button" ng-if="league.id && can.leagueEdit(league)" ng-click="leagueDelete()"
+                    class="btn btn-danger m-r-1">
+                Delete league
+            </button>
+            <button type="submit" class="btn btn-primary">{{ league.id ? 'Save' : 'Create' }}</button>
+        </div>
+    </div>
+
+</form>

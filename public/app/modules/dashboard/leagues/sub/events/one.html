@@ -1,0 +1,33 @@
+<div class="container m-list-container">
+    <div class="row">
+        <div class="col-xs-12 l-panel-views-window ">
+            <div class="item">
+                <div class="window-heading">
+                    <div>
+                        <h2 class="page-title">
+                            {{:: event.title }}
+                        </h2>
+                        <div class="item-date"><span>{{:: event.time | dateTimeFormat }} ({{ event.timezone }})</span></div>
+
+                    </div>
+
+                    <div class="actions" ng-if="event.user_id === current_user.id">
+                        <a ui-sref="leagues_events.edit({event_id:event.id})" class="btn btn-primary-outline btn-xs">Edit</a>
+                        <button class="btn btn-danger btn-xs" ng-click="removePost()">Remove</button>
+                    </div>
+                </div>
+
+
+                <div class="window-content">
+                    <div ng-bind-html=":: event.description | bindHtml"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 m-t-1">
+            <a class="btn btn-default-outline btn-xs" ui-sref="leagues_events.list">Back</a>
+        </div>
+    </div>
+</div>

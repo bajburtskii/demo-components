@@ -1,0 +1,38 @@
+<div class="container ng-scope">
+    <div class="row">
+        <div class="col-xs-12">
+          <h3>Choose your professional sports league</h3>
+          <div class="vendor-list">
+		        <div class="pull-left box" ng-repeat="sport in sports">
+			        <div class="desc">
+			        	<div class="form-group">
+		        			<a href ng-click="ui.chooseProvider(sport.id)">{{ sport.name}}</a>
+		        		</div>
+		        	</div>
+		        </div>
+		    	</div>
+        </div>
+    </div>
+</div>
+
+	<div class="container ng-scope">
+	    <div class="row">
+	        <div class="col-xs-12">
+	          <h3>Choose your fantasy sports provider</h3>
+	          <div class="vendor-list">
+			        <div class="pull-left box" ng-repeat="vendor in vendors">
+			          <div class="photo">
+				          <a href="/leagues/link/{{vendor.id}}/{{vendor.sport}}">
+				          	<img src="/images/vendor_{{vendor.title}}.png"/>
+				          </a>
+				        </div>
+				        <div class="desc">
+				        	<div class="form-group">
+			        			<a href ng-click="authenticate(vendor.title)">{{ vendor.name}}</a>
+			        		</div>
+			        	</div>
+			        </div>
+			    	</div>
+	        </div>
+	    </div>
+	</div>

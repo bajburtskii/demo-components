@@ -1,0 +1,135 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-title m-b-1">Transactions</h2>
+
+            <div ng-cloak>
+                <div class="m-flex-table">
+                    <div class="thead" ng-if="transactions_non_confirmed.length">
+                        <div class="th" style="border-right: 0;">
+                            <b>New transactions (waiting for confirmation)</b>
+                        </div>
+
+                        <div class="th">
+                            <div class="border-bottom dot-group font-weight-normal">
+                                <span class="dot dot-success">Confirmed</span>
+                                <span class="dot dot-danger">Denied</span>
+                                <span class="dot dot-default">Total members</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tbody" ng-if="transactions_non_confirmed.length">
+                        <div class="tr" ng-repeat="trans in transactions_non_confirmed">
+                            <div class="tr-inner">
+                                <div class="td td-flow-2">
+                                    <div class="td-inner">
+                                        {{ trans.created_at | dateFormat:'MM/dd/yyyy' }} {{ trans.name }} SSSS
+                                        <p>{{ trans.note }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="td">
+                                    <div class="td-inner text-danger">
+                                        <span ng-if="trans.type == 2">-</span>
+                                        {{ trans.amount | currency : '$' : 2 }}
+                                    </div>
+                                </div>
+
+                                <div class="td">
+                                    <div class="td-inner">
+                                        <span class="lead">
+                                            <span class="label label-success">{{ ui.countConfirmedTransactions(trans) }}</span>
+                                        </span>
+                                        <span class="lead">
+                                            <span class="label label-danger">{{ ui.countDeniedTransactions(trans) }}</span>
+                                        </span>
+                                        <span class="lead">
+                                            <span class="label label-default">{{ league.users_count }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="td">
+                                    <div class="td-inner" ng-if="!ui.alreadyConfirmOrDeny(trans)">
+                                            <a ng-if="ui.canConfirmTransaction()" ng-click="ui.changeTransactionStatus(trans.id, 'accept')" href class="btn btn-primary btn-rounded btn-sm text-uppercase">Confirm</a>
+                                            <a ng-if="ui.canConfirmTransaction()" ng-click="ui.changeTransactionStatus(trans.id, 'deny')" href class="btn btn-primary-outline btn-rounded btn-sm text-uppercase m-l-0-5">Deny</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div ng-if="!transactions_non_confirmed.length && !transactions.data.length">
+                    <placeholder-no-items label="No transactions"></placeholder-no-items>
+                </div>
+
+                <div class="m-flex-table" ng-show="transactions.data.length">
+                    <div class="thead">
+                        <div class="th" style="border-right: 0;">
+                            <b>Date / Transaction type</b>
+                        </div>
+                        <div class="th" style="border-right: 0;">
+                            <b>Amount</b>
+                        </div>
+                        <div class="th" style="border-right: 0;">
+                            <b>Balance</b>
+                        </div>
+                    </div>
+
+                    <div class="tbody">
+                        <div class="tr" ng-repeat="trans in transactions.data">
+                            <div class="tr-inner">
+                                <div class="td">
+                                    <div class="td-inner">
+                                        {{ trans.created_at | dateFormat:'MM/dd/yyyy' }} {{ trans.name }}{{  trans.status == 9 ? ' (denied)' : '' }}
+                                        <div class="transaction__note" ng-if="trans.note">
+                                            <div class="note__name">Note:</div>
+                                            {{ trans.note }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--<div class="td">-->
+                                    <!--<div class="td-inner text-danger">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                                <div class="td">
+                                    <div class="td-inner" ng-class="{'text-success' : trans.type == 1, 'text-danger': trans.type == 2}">
+                                        <span ng-if="trans.type == 2">-</span>
+                                        {{ trans.amount | currency : '$' : 2 }}
+                                    </div>
+                                </div>
+
+                                <div class="td">
+                                    <div class="td-inner">
+                                        <strong ng-bind="trans.current_balance | currency : '$' : 2"></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="m-t-2 p-b-2 text-xs-center">
+                    <div paging
+                         hide-if-empty="true"
+                         page="transactions.current_page"
+                         page-size="transactions.per_page"
+                         total="transactions.total"
+                         url="/api/leagues/{{ league.id }}/transactions"
+                         collection="transactions.data"
+                         show-prev-next="true">
+                    </div>
+                </nav>
+
+
+            </div><!-- /.table-responsive -->
+        </div>
+    </div>
+</div>

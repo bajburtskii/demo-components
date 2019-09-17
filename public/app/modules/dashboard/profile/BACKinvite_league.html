@@ -1,0 +1,54 @@
+<div class="container m-invite">
+	<div class="row">
+		<div class="col-xs-12 m-b-3 col-xl-5 border-xl-right m-invite__block">
+
+			<h2 class="page-title">You have been invited to join {{ league.name }}.</h2>
+			<p ng-if="league.invite_amount">
+				{{ league.invite_amount | currency : '$' : 2 }} will be withdrawn from your balance.
+			</p>
+
+			<div class="alert-danger" ng-if="$root.auth.data.balance < league.invite_amount">
+				There is not enough funds on your balance. Please add funds to accept the invitation
+			</div>
+
+			<div>
+				<button type="button" class="btn btn-danger m-r-1" ng-click="inviteDecline()">Decline</button>
+				<button type="button" class="btn btn-primary" ng-click="inviteAccept()"
+						ng-disabled="$root.auth.data.balance < league.invite_amount">Accept
+				</button>
+			</div>
+		</div>
+		<div class="col-xs-12 m-b-1 col-xl-4">
+			<h2 class="page-title">My Balance</h2>
+
+			<div class="display-4">{{ $root.auth.data ? $root.auth.data.balance : 0 | currency : '$' : 2 }}
+			</div>
+
+		</div>
+		<div class="col-xs-12 m-b-3  col-xl-3 m-invite__block">
+
+			<h2 class="page-title">Add Funds</h2>
+
+			<!-- Errors -->
+			<div class="alert-danger" ng-if="server_message" ng-bind="server_message"></div>
+
+			<form name="form" ng-submit="charge()">
+				<div class="row">
+					<div class="col-xl-10 col-sm-6 col-xs-8">
+						<div class="form-group row" ng-class="{'has-danger': form.amount.errors}">
+							<div class="col-xs-12 ">
+								<label class=" form-control-label ">Amount</label>
+								<input class="form-control" placeholder="0.00" ng-model="item.amount" name="amount" type="number" step="0.01">
+								<span class="text-danger" ng-if="form.amount.errors"
+									  ng-bind="form.amount.errors[0]"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary" ng-disabled="!item.amount">Confirm</button>
+			</form>
+
+		</div>
+	</div>
+
+</div>

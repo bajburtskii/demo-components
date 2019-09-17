@@ -1,0 +1,151 @@
+
+<section class="api container-fluid" id="trading-block">
+	<div class="row page-banner">
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 page-header">
+			<h2 class="page-title">Trading Block</h2>
+		</div>
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 action-button">
+			<button class="btn btn-create" ng-click="makeTradeRequest()">Create Trade</button>
+		</div>
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 provider-link">
+			<a class="btn btn-primary" ng-href="{{global_data.url}}/tradingblock" target="_blank" ng-if="global_data.provider.title == 'yahoo'">View Trading Block on {{ global_data.provider.title }}</a>
+			<a class="btn btn-primary" ng-href="https://www55.myfantasyleague.com/2017/select_franchise?L={{ global_data.provider_league_id }}&O={{ users_team_short_key }}" target="_blank" ng-if="global_data.provider.title == 'mfl'">View Trading Block on {{ global_data.provider.title }}</a>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row trading">
+		<div class="sub-header">
+			<h4>Offers Received</h4>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid trade-data">
+	<div class="row slide-section" ng-model="trade" ng-repeat="trade in trades_received track by $index">
+		<div class="row trade-count">
+			<h4>{{ $index + 1 }}</h4> 
+		</div>
+		<div class="row trade-item">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 team-left trade-from">
+				<div class="row responsive-table">
+					<div class="row table-title">
+						<a ui-sref="leagues.teams({id: global_data.id, team: trade.meta.trade_partner_key })"><h3>{{ trade.meta.trade_partner_name }}</h3></a>
+					</div>
+					<div class="row table-headers">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h3>Name</h3></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Role</h3></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Position</h3></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Team</h3></div>
+					</div>
+					<div class="row table-data" ng-repeat="player in trade.players_received">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><p>{{ player.name }}</p></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position_type }}</p></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position }}</p></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.team }}</p></div>
+					</div>
+				</div>
+				<div class="versus"><span>FOR</span></div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 team-right trade-to">
+				<div class="row responsive-table">
+					<div class="row table-title">
+						<a ui-sref="leagues.teams({id: global_data.id, team: global_data.user.external_user_id })"><h3>You</h3></a>
+					</div>
+					<div class="row responsive-table">
+						<div class="row table-headers">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h3>Name</h3></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Role</h3></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Position</h3></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Team</h3></div>
+						</div>
+						<div class="row table-data" ng-repeat="player in trade.players_traded">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><p>{{ player.name }}</p></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position_type }}</p></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position }}</p></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.team }}</p></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row process-trade">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<button class="btn btn-primary" ng-click="tradeResponse(true, $index+1, trade)">Accept Trade</button>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<button class="btn btn-danger" ng-click="tradeResponse(false, $index+1, trade)">Reject Trade</button>
+			</div>
+		</div>
+	</div>
+	<div class="row table-data trade-msg" ng-if="!trades_received.length > 0">
+		<p>You have received no pending trade offers</p>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row trading">
+		<div class="sub-header">
+			<h4>Offers Made</h4>
+		</div>
+	</div>
+</section>
+<section class="api container-fluid trade-data">
+	<div class="row slide-section" ng-model="trade" ng-repeat="trade in trades_made track by $index">
+		<div class="row trade-count">
+			<h4>{{ $index + 1 }}</h4>
+		</div>
+		<div class="row trade-item">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 team-left trade-from">
+				<div class="row responsive-table">
+					<div class="row table-title">
+						<a ui-sref="leagues.teams({id: global_data.id, team: global_data.user.external_user_id})"><h3>You</h3></a>
+					</div>
+					<div class="row table-headers">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h3>Name</h3></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Role</h3></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Position</h3></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Team</h3></div>
+					</div>
+					<div class="row table-data" ng-repeat="player in trade.players_traded">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><p>{{ player.name }}</p></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position_type }}</p></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position }}</p></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.team }}</p></div>
+					</div>
+				</div>
+				<div class="versus"><span>FOR</span></div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 team-right trade-to">
+				<div class="row responsive-table">
+					<div class="row table-title">
+						<a ui-sref="leagues.teams({id: global_data.id, team: trade.meta.trade_partner_key })"><h3>{{ trade.meta.trade_partner_name }}</h3></a>
+					</div>
+					<div class="row responsive-table">
+						<div class="row table-headers">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h3>Name</h3></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Role</h3></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Position</h3></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><h3>Team</h3></div>
+						</div>
+						<div class="row table-data" ng-repeat="player in trade.players_received">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><p>{{ player.name }}</p></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position_type }}</p></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.position }}</p></div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><p>{{ player.team }}</p></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="row process-trade" ng-hide="global_data.provider.title =='yahoo' || $scope.global_data.provider.title =='mfl'">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<button class="btn btn-danger" ng-click="tradeResponse('reject', $index+1, trade['meta']['transaction_key'])">Revoke Trade</button>
+			</div>
+		</div> -->
+	</div>
+	<div class="row table-data trade-msg" ng-if="!trades_made.length > 0">
+		<p>You have made no pending trade offers</p>
+	</div>
+</section>
+<section class="api container-fluid">
+	<div class="row page-footer"></div>
+</section>

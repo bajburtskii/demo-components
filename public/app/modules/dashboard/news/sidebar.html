@@ -1,0 +1,8 @@
+<perfect-scrollbar class="m-sidebar__scrollbar" wheel-propagation="false" wheel-speed="10">
+    <ul class="nav">
+        <li ng-repeat="item in navItems" class="nav-item"
+            ng-class="{ active: ($root.state.current.name === 'news.list' && $root.state.params.alias === item.alias)}">
+            <a class="nav-link" ui-sref="news.list({alias:item.alias})"><span class="nav-title">{{ ::item.title }}</span></a>
+        </li>
+    </ul>
+</perfect-scrollbar>

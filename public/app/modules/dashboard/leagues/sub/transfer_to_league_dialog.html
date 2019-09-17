@@ -1,0 +1,31 @@
+<div class="custom-confirm dialog-contents">
+    <div class="confirm-inner">
+        <img imageonload ng-src="/images/logo.png"/>
+        <div class="inner">
+            <p ng-bind="ngDialogData.title"></p>
+        </div>
+    </div>
+
+    <form name="form" ng-submit="ngDialogData.data.ui.transferToLeagueCreate(ngDialogData.data.league, amount, note)">
+        <div class="confirm-inner">
+            <div class="form-group row" style="padding: 10px 10%;" ng-class="{'has-danger': form.amount.errors}">
+                <input class="form-control" placeholder="0.00" ng-model="amount" name="amount" type="number" />
+                <span class="text-danger" ng-if="form.amount.errors" ng-bind="form.amount.errors[0]"></span>
+            </div>
+
+            <div class="form-group row"  style="padding: 10px 10%;" ng-class="{'has-danger': form.note.errors}">
+                    <label class=" form-control-label">Note</label>
+                                    <textarea class="form-control"
+                                              ng-model="note"
+                                              name="note">
+                                    </textarea>
+                    <span class="text-danger" ng-if="form.note.errors" ng-bind="form.note.errors[0]"></span>
+            </div>
+        </div>
+    </form>
+
+    <div class="confirm-btn">
+        <button class="button" ng-click="closeThisDialog()">Cancel</button>
+        <button class="button green" ng-click="ngDialogData.data.ui.transferToLeagueCreate(ngDialogData.data.league, amount, note)">Create</button>
+    </div>
+</div>

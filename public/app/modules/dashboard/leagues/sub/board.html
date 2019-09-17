@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h2 class="page-title">Messages</h2>
+
+            <div class="row" ng-show="messages.data.length">
+                <div class="col-xs-12 m-board--message">
+                    <perfect-scrollbar wheel-propagation="false" wheel-speed="3" class="scrollable">
+                        <div class="media" ng-repeat="message in messages.data">
+                            <div class="media-left">
+                                <img imageonload width="45" class="img-thumbnail img-circle"
+                                     ng-src="{{  message.author.avaToken | getAvaUrl:1:'original' }}"/>
+                            </div>
+                            <div class="media-body">
+                                <div class="media-title">
+                                    <strong>{{:: message.author.first_name }} {{:: message.author.last_name }}</strong>
+                                    |
+                                    {{:: message.created_at | dateTimeFormat}}
+                                    <a ng-if="message.author.id == current_user.id" ng-click="editMessage($event, message)">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </div>
+                                <div class="media-description" ng-bind-html="::message.text | bindHtml"></div>
+                            </div><!-- /.media-body -->
+                        </div><!-- /.media -->
+                    </perfect-scrollbar>
+
+                    <!-- ==================== -->
+                    <hr class="m-y-2">
+                    <!-- ==================== -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+            <div ng-show="!messages.data.length">
+                <placeholder-no-items label="No messages yet"></placeholder-no-items>
+            </div>
+
+            <form ng-submit="sendMessage()">
+                <div class="row">
+                    <div class="col-xs-12 ">
+
+                        <div class="form-group" ng-class="{'has-danger': errors.text}">
+                            <h2 class="page-title m-b-1">Your message</h2>
+                            <!--<text-editor-->
+                                    <!--type="light"-->
+                                    <!--name="text"-->
+                                    <!--model="message.text"-->
+                            <!--&gt;</text-editor>-->
+                            <div id="summernote">
+                                <editor-summernote value="message.text" config="options" file-type="5" parent-id="message.id"></editor-summernote>
+                            </div>
+                        </div><!-- /.form-group -->
+
+
+                        <div class="text-xs-right">
+                            <button type="button" class="btn" ng-if="message.id" ng-click="cancelEditing()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">{{ message.id ? 'Edit' : 'Post' }} message</button>
+                        </div>
+
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </form><!-- /(submit) -->
+        </div>
+    </div>
+</div>

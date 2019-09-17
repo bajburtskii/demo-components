@@ -1,0 +1,20 @@
+<!-- Header -->
+<app-navbar class="main-header {{ $root.getUserSkin() }} {{ $root.getUserBorderSkin() }}"></app-navbar>
+
+<!-- Sidebar -->
+<div ui-view="sidebar" class="main-sidebar sidebar-nav m-sidebar"/>
+
+<!-- Container -->
+<div class="main-container m-container" ng-cloak>
+	<!-- Main content -->
+	<main class="main-content" ng-style="{'min-height' : innerHeight }">
+		<div ui-view="content" class="nganimation page-animation"/>
+	</main>
+	<ul class="nav navbar-fixed-bottom clearfix" ng-include="'/app/directives/dashboard/footer.html'"></ul>
+</div><!-- /.main-container -->
+
+<nav class="main-navbar skin-blue-gray m-navbar fixed-mobile-menu" ng-show="!$root.isKeyboardVisible">
+	<ul class="nav navbar-fixed-bottom pull-xs-left clearfix" ng-include="'/app/directives/dashboard/nav.html'"></ul>
+</nav>
+
+

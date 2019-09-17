@@ -1,0 +1,20 @@
+<div class="custom-confirm dialog-contents">
+    <div class="confirm-inner">
+        <img imageonload ng-src="{{ ngDialogData.data.display }}" ng-if="global_data.provider.title =='yahoo'"/>
+        <div class="inner">
+            <p ng-bind="ngDialogData.title"></p>
+        </div>
+    </div>
+    <div class="callback-inner" ng-if="lineup_action == 'start' && global_data.provider.title =='yahoo'">
+        <p ng-bind="ngDialogData.callback"></p>
+        <div class="form-group row">
+            <div class="col-xs-12 ">
+                <select class="form-control c-select" ng-model="position" ng-options="position for position in ngDialogData.data.positions" ng-change="ngDialogData.data.setPosition(position)"></select>
+            </div>
+        </div>
+    </div>
+    <div class="confirm-btn">
+        <button class="button dialog-cancel" ng-click="ngDialogData.data.clearScope(); closeThisDialog();">Cancel</button>
+        <button class="button green" ng-click="ngDialogData.data.logger(); ngDialogData.data.clearScope(); closeThisDialog();">Confirm</button>
+    </div>
+</div>
